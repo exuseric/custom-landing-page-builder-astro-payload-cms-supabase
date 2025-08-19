@@ -1,0 +1,150 @@
+---
+interface Card {
+    [key: string]: {
+        [key: string]: any;
+    };
+}
+import Container from "@components/Container.astro";
+import CustomImage from "@components/CustomImage.astro";
+import { Icon } from "astro-iconify";
+import s from "./style.module.css";
+
+const { cards } = Astro.props;
+
+const groupedCards = [];
+for (let i = 0; i < cards.length; i += 4) {
+    groupedCards.push(cards.slice(i, i + 4));
+}
+---
+
+<section class={s["gallery-section"]} id="gallery" aria-label="Image gallery">
+    <div class={s["gallery-container"]}>
+
+        {groupedCards.map(card => (
+            <div class={s["gallery-row"]} aria-label="Gallery row">
+                <div class={s["gallery-grid"]}>
+                    {card.map((item: Card) => (
+                        <figure class={s["gallery-item"]} data-type={item.type}>
+                            <CustomImage
+                                eager={false}
+                                image={item}
+                                size="medium"
+                                classlist={s["gallery-card__image"]}
+                            />
+                            <figcaption class={s["gallery-caption"]}>{item.title}</figcaption>
+                        </figure>
+                    ))}
+                </div>
+            </div>
+        ))}
+
+        <div class={s["view-more-container"]}>
+            <button
+                class={s["btn  btn--primary"]}
+                id={s["view-more-btn"]}
+                aria-expanded="false"
+                aria-controls="gallery-container"
+                data-action="view-more"
+                aria-label="View more images in the gallery"
+            >
+                View More
+            </button>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const viewMoreBtn = document.getElementById("view-more-btn") as HTMLButtonElement;
+        const galleryRows = document.querySelectorAll(".gallery-row") as NodeListOf<HTMLDivElement>;
+        const galleryContainer = document.querySelector(".gallery-container") as HTMLDivElement;
+        let visibleRows = 1; // Start with one row visible
+
+        // Function to check if there are more rows to show
+        function hasMoreRows() {
+            return visibleRows < galleryRows.length;
+        }
+
+        // Function to update the view more button text
+        function updateButtonText() {
+            viewMoreBtn.textContent = hasMoreRows() ? "View More" : "Show Less";
+            viewMoreBtn.setAttribute("aria-expanded", String(!hasMoreRows()));
+        }
+
+        // Click event for view more button
+        viewMoreBtn.addEventListener("click", function () {
+            if (hasMoreRows()) {
+                // Show next row
+                galleryRows[visibleRows].style.display = "block";
+                visibleRows++;
+
+                // Announce to screen readers that new content is available
+                const announcement = document.createElement("div");
+                announcement.setAttribute("aria-live", "polite");
+                announcement.setAttribute("class", "sr-only");
+                announcement.textContent = `Row ${visibleRows} is now visible`;
+                document.body.appendChild(announcement);
+
+                // Remove announcement after it's been read
+                setTimeout(() => {
+                    document.body.removeChild(announcement);
+                }, 1000);
+
+                // Scroll to the newly visible row
+                galleryRows[visibleRows - 1].scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                });
+            } else {
+                // Reset to show only first row
+                for (let i = 1; i < galleryRows.length; i++) {
+                    galleryRows[i].style.display = "none";
+                }
+                visibleRows = 1;
+
+                // Scroll back to the top of the gallery
+                const galleryElement = document.getElementById("gallery") as HTMLDivElement;
+                galleryElement.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+
+            // Update button text
+            updateButtonText();
+        });
+
+        // Initialize button text
+        updateButtonText();
+
+        // Add intersection observer for true lazy loading
+        if ("IntersectionObserver" in window) {
+            const imgOptions = {
+                root: null,
+                threshold: 0.1,
+                rootMargin: "200px 0px",
+            };
+
+            const imgObserver = new IntersectionObserver(
+                (entries, observer) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            const src = img.getAttribute("src");
+
+                            // This is where you would replace placeholder with real image
+                            // For demo purposes, we're just logging
+                            console.log(`Loading image: ${src}`);
+
+                            // Stop observing after loading
+                            observer.unobserve(img);
+                        }
+                    });
+                },
+                imgOptions,
+            );
+
+            // Observe all gallery images
+            document.querySelectorAll(".gallery-image").forEach((img) => {
+                imgObserver.observe(img);
+            });
+        }
+    });
+</script>

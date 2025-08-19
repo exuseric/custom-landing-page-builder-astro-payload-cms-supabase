@@ -1,0 +1,30 @@
+---
+interface Props {
+    type: string;
+    text?: string;
+    href: string;
+}
+import { Icon } from "astro-iconify";
+const props = Astro.props;
+
+const icons: Record<string, string> = {
+    'x (formerly twitter)': "ri:twitter-x-line",
+    linkedin: "ri:linkedin-box-fill",
+    facebook: "ri:facebook-box-fill",
+    instagram: "mingcute:instagram-fill",
+    youtube: "ri:youtube-fill",
+    tiktok: "ic:baseline-tiktok",
+    telegram: "ic:baseline-telegram",
+    whatsapp: "ri:whatsapp-fill",
+    pinterest: "mdi:pinterest",
+};
+---
+
+<a href={props.href} data-icon-link target="_blank">
+    <Icon name={icons[props.type]} aria-hidden="true" focusable="false" />
+    <span>{props.text}</span>
+</a>
+
+<style>
+
+</style>

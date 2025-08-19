@@ -1,0 +1,108 @@
+.testimonial_carousel__controls {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-content: start;
+    align-items: center;
+    gap: var(--size-4);
+    width: max-content;
+    margin: var(--size-4) 0;
+}
+
+.testimonial_carousel__control {
+    grid-row: 1 / -1;
+}
+
+.testimonial_carousel__control--next-btn,
+.testimonial_carousel__control--prev-btn {
+    padding: 0.2rem;
+
+    border-radius: calc(infinity * 1px);
+    width: 32px;
+    height: 32px;
+}
+
+.testimonial_carousel__control--prev-btn {
+    grid-column: 1 / 2;
+}
+
+.testimonial_carousel__control--next-btn {
+    grid-column: 2 / -1;
+}
+
+.testimonial_carousel__control--dots {
+    grid-column: 2 / 3;
+
+    display: flex;
+    gap: var(--size-1);
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 0;
+}
+
+.testimonial_carousel__control__dot {
+    --bg-color: var(--clr-neutral-400);
+    width: 8px;
+    height: 8px;
+
+    border: none;
+    padding: 0;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    aspect-ratio: 1/1;
+
+    border-radius: calc(infinity * 1px);
+}
+
+.testimonial_carousel__control__dot[data-active="true"] {
+    --bg-color: var(--clr-primary);
+}
+
+.testimonial_carousel__viewport {
+    width: 100%;
+    overflow: hidden;
+}
+
+.testimonial_carousel__track {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: var(--size-2);
+
+    width: 100%;
+    padding: var(--size-4) 0;
+    transition: transform 0.5s cubic-bezier(0.55, 0.085, 0.68, 0.53);
+    overflow-x: hidden;
+}
+
+.testimonial_card {
+    position: relative;
+    isolation: isolate;
+    z-index: 1;
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--size-4);
+    justify-content: space-between;
+
+    padding: var(--size-4);
+    width: 100%;
+    min-width: 35ch;
+    min-height: 150px;
+
+    border: 2px solid var(--clr-neutral-100);
+}
+
+.testimonial_card address {
+    padding-top: var(--size-1);
+    border-top: 1px solid var(--clr-neutral-300);
+}
+
+@media (min-width: 768px) {
+    .testimonial_carousel__viewport {
+    }
+
+    .testimonial_card {
+        min-width: 40ch;
+    }
+}

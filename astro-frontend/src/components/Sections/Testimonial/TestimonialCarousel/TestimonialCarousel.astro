@@ -1,0 +1,40 @@
+---
+import Container from "@components/Container.astro";
+import "./style.css";
+import Carousel from "@components/Carousel.astro";
+import CarouselItem from "@components/CarouselItem.astro";
+---
+
+<div class="testimonial-carousel">
+    <Container>
+        <header class="section__header">
+            <h2>Testimonials</h2>
+            <div class="tags">
+                <span>Scroll Buttons</span>
+                <span>Scroll Markers</span>
+                <span>Scroll-State Queries</span>
+                <span>Anchor</span>
+            </div>
+        </header>
+        <Carousel>
+            <CarouselItem>
+                <figure
+                    class="testimonial"
+                    role="tabpanel"
+                    aria-label="Slide 1"
+                >
+                    <blockquote cite="https://www.huxley.net/bnw/four.html">
+                        <p>
+                            Words can be like X-rays, if you use them
+                            properly—they’ll go through anything. You read and
+                            you’re pierced.
+                        </p>
+                    </blockquote>
+                    <figcaption>
+                        —Aldous Huxley, <cite>Brave New World</cite>
+                    </figcaption>
+                </figure>
+            </CarouselItem>
+        </Carousel>
+    </Container>
+</div>

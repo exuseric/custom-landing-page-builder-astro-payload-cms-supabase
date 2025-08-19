@@ -1,0 +1,91 @@
+---
+import type { WhyChooseUsInteractiveBlock } from "@utils/payload/types";
+interface Props extends WhyChooseUsInteractiveBlock {}
+
+// import { Icon } from "astro-iconify";
+import s from "./style.module.css";
+import Container from "@components/Container.astro";
+import CustomImage from "@components/CustomImage.astro";
+import { extractLexicalText } from "@utils/payload/helpers";
+const props = Astro.props;
+---
+
+<section
+    class:list={["page-section", s["why-choose-us-interactive"]]}
+    data-highlight="false"
+    data-offscreen
+    aria-labelledby={props.id}
+>
+    <Container>
+        <header class={s["page-section__header"]}>
+            <h2 id={props.id}>{props.title}</h2>
+            <slot set:html={extractLexicalText(props.description)} />
+        </header>
+
+        <div class={s["interactive__wrapper"]}>
+            <div class={s["interactive__image_container"]}>
+                {
+                    props.options.map((option, index) => (
+                        <div
+                            class={s["interactive__image_wrapper"]}
+                            data-visible={index === 0 ? true : false}
+                            data-id={option.id}
+                            data-interactive-image
+                        >
+                            <CustomImage
+                                image={option.image}
+                                classlist={s[`interactive__image`]}
+                                size="large"
+                                eager={false}
+                            />
+                        </div>
+                    ))
+                }
+            </div>
+
+            <div class={s["interactive__content_container"]}>
+                {
+                    props.options.map((option) => (
+                        <div
+                            class={s["interactive__content"]}
+                            data-controls={option.id}
+                            data-interactive-control
+                        >
+                            <h3>{option.title}</h3>
+                            <slot
+                                set:html={extractLexicalText(
+                                    option.description,
+                                )}
+                            />
+                        </div>
+                    ))
+                }
+            </div>
+        </div>
+    </Container>
+</section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const controls = document.querySelectorAll(
+            "[data-interactive-control]",
+        ) as NodeListOf<HTMLDivElement>;
+
+        controls.forEach((control) => {
+            control.addEventListener("mouseenter", (event) => {
+                const controlId = event.target.dataset.controls;
+                const puppets = document.querySelectorAll("[data-interactive-image]")
+
+                puppets.forEach((puppet) => {
+                    const puppetId = puppet.dataset.id;
+                    
+                    if(puppetId === controlId) {
+                        puppet.dataset.visible = true
+                    } else {
+                        puppet.dataset.visible = false
+                    }
+                })
+            });
+        });
+    });
+</script>

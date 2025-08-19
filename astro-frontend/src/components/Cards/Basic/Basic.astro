@@ -1,0 +1,27 @@
+---
+import type {BasicCard} from '@utils/payload/types'
+import s from "./style.module.css";
+import CustomImage from "@components/CustomImage.astro";
+import { extractLexicalText } from '@utils/payload/helpers';
+const {cards} = Astro.props;
+// console.log(cards);
+---
+
+<div class={s["basic_card"]} data-animate="fade-slide" data-animate-children="true" data-animate-children-only="true">
+    {
+        cards.map((card: BasicCard) => (
+            <article>
+                {card.image && (
+                    <div class={s["basic_card__image-wrapper"]}>
+                        <CustomImage eager={false} image={card.image} size="medium" classlist={s["basic_card__image_component"]} />
+                    </div>
+                )}
+                <div class={s["basic_card__content"]} data-animate="fade-slide" data-animate-children="true" data-animate-children-only="true">
+                    <h3>{card.title}</h3>
+                    {/* <slot set:html={extractLexicalText(card.body)} /> */}
+                    <slot set:html={card.body_html} />
+                </div>
+            </article>
+        ))
+    }
+</div>

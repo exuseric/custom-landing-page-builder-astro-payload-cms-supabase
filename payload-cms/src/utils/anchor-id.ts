@@ -1,0 +1,1 @@
+export const anchorIds = ['home', 'about', 'services', 'contact', 'products'];

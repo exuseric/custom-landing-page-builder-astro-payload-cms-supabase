@@ -1,0 +1,57 @@
+---
+import type { WhyChooseUsColumnBlock } from "@utils/payload/types";
+interface Props extends WhyChooseUsColumnBlock {}
+
+// import { Icon } from "astro-iconify";
+import s from "./style.module.css";
+
+import Container from "@components/Container.astro";
+import CustomImage from "@components/CustomImage.astro";
+import { extractLexicalText } from "@utils/payload/helpers";
+const props = Astro.props;
+---
+
+<section
+    class={s["page-section"]}
+    data-highlight={props.highlight ?? 'false'}
+    data-offscreen
+    aria-labelledby={props.id}
+>
+    <Container>
+        <header class:list={[s["two_column_stat__header"], "page-section__header"]}>
+            <h2 id={props.id}>{props.title}</h2>
+            <slot set:html={extractLexicalText(props.description)} />
+        </header>
+        <div class={s["two_column_stat__wrapper"]}>
+            <div class={s["two_column_stat__image_wrapper"]}>
+                {
+                    props.image && (
+                        <CustomImage
+                            image={props.image}
+                            classlist={s[`two_column_stat__image`]}
+                            size="large"
+                            eager={false}
+                        />
+                    )
+                }
+            </div>
+            <div class={s["two_column_stat__content_wrapper"]}>
+                {
+                    props.options.map((option) => (
+                        <div class={s["two_column_stat__content"]}>
+                            <h3 class={s["two_column_stat__content_title"]}>
+                                {option.title}
+                            </h3>
+                            <slot
+                                class={s["two_column_stat__description"]}
+                                set:html={extractLexicalText(
+                                    option.description,
+                                )}
+                            />
+                        </div>
+                    ))
+                }
+            </div>
+        </div>
+    </Container>
+</section>

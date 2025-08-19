@@ -1,0 +1,30 @@
+---
+import { Image } from "astro:assets";
+import { DATABASE_URL } from "astro:env/server";
+import type { Media } from "@utils/payload/types";
+// interface Props {
+//   image: Media;
+//   classlist: string | string[];
+//   eager: boolean;
+//   size: string;
+//   id?: string;
+// }
+
+const { image, classlist, size, eager, id, isSlide, slideOut, slideActive} = Astro.props;
+---
+
+<Image
+  id={id}
+  src={`${DATABASE_URL}${image?.url}`}
+  alt={image.alt || ""}
+  title={image.alt}
+  width={(image.width as number) || 1000}
+  height={(image.height as number) || 1000}
+  class:list={[classlist]}
+  loading={eager ? "eager" : "lazy"}
+  decoding={eager ? "sync" : "async"}
+  priority={eager}
+  data-slide={isSlide}
+  data-active={slideActive}
+  data-sliding-out={slideOut}
+/>

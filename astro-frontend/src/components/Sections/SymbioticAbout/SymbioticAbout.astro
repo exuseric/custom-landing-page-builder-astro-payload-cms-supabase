@@ -1,0 +1,51 @@
+---
+import type { SymbioticAboutBlock } from "@utils/payload/types";
+interface Props extends SymbioticAboutBlock {}
+import Container from "@components/Container.astro";
+import s from "./style.module.css";
+import CustomImage from "@components/CustomImage.astro";
+import { extractLexicalText } from "@utils/payload/helpers";
+import Gallery from "../Gallery/Gallery.astro";
+const props = Astro.props;
+---
+<section
+    class:list={[s["symbiotic-about"], "page-section"]}
+    data-highlight={props.highlight}
+    id={props["anchor id"]?.split(" ").join("-")}
+    data-offscreen
+    aria-labelledby={props.id}
+>
+    <Container>
+        <div
+            class={s["symbiotic-about__top-section"]}
+            data-animate="fade-slide"
+            data-animate-children="true"
+            data-animate-children-only="true"
+        >
+            <CustomImage
+                classlist={s["symbiotic-about__image"]}
+                eager={false}
+                size="large"
+                image={props.image}
+            />
+            <Container>
+                <h2 id={props.id} class={s["symbiotic-about__title"]}>
+                    {props.title}
+                </h2>
+                <div class={s["symbiotic-about__excerpt"]}>
+                    <slot set:html={extractLexicalText(props.excerpt)} />
+                </div>
+            </Container>
+        </div>
+    </Container>
+
+    <Container>
+        <div class={s["symbiotic-about__bottom-section"]}>
+            <div class={s["symbiotic-about__content"]}>
+                <article class={s["symbiotic-about__content-article"]} data-animate="fade-slide" data-animate-children="true" data-animate-children-only="true">
+                    <slot set:html={extractLexicalText(props.body)} />
+                </article>
+            </div>
+        </div>
+    </Container>
+</section>

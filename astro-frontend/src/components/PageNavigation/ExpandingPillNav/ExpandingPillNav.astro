@@ -1,0 +1,101 @@
+---
+import Container from "@components/Container.astro";
+import { Icon } from "astro-iconify";
+import CustomImage from "@components/CustomImage.astro";
+import { translateNavItem } from "@utils/translations";
+import s from "./style.module.css";
+
+type Link = {
+    id: string;
+    name: string;
+    anchorId: string;
+    style: string;
+};
+const {
+    navigation: { logo, menuItems },
+    fixedMenu,
+    blackText,
+    country,
+    title,
+} = Astro.props;
+
+const pageLinks = menuItems.map((link: Link) =>
+    link.name === "home"
+        ? { ...link, name: translateNavItem("home", country), anchorId: "/" }
+        : {
+              ...link,
+              name: translateNavItem(link.name, country),
+              anchorId: `#${link.anchorId.split(" ").join("-")}`,
+          },
+);
+---
+
+<nav
+    class={s["nav"]}
+    data-nav-bar
+    data-nav
+    data-is-active="false"
+    data-menu-toggled="false"
+    data-fixed-menu={fixedMenu}
+    data-black-text={blackText}
+    aria-label="page navigation"
+>
+    <Container>
+        <div class={s["nav__wrapper"]}>
+            <a class={s["nav__logo"]} href="/" aria-label={title.trim()}>
+                <CustomImage
+                    eager={true}
+                    image={logo}
+                    classlist={s["nav__logo-image"]}
+                    size="small"
+                />
+                <!-- <span class={s["nav__logo-text"]}>{title}</span> -->
+            </a>
+            <ul
+                class={s["nav__menu"]}
+                data-glass
+                data-menu
+                data-is-active="false"
+                aria-label="page menu"
+                aria-haspopup="true"
+                aria-expanded="false"
+            >
+                {
+                    pageLinks.map((link: Link) => (
+                        <li class={s["nav__menu-item"]}>
+                            <a
+                                title={link.name}
+                                href={link.anchorId}
+                                class:list={[s["nav__link"], "btn btn--text"]}
+                            >
+                                {link.name}
+                            </a>
+                        </li>
+                    ))
+                }
+            </ul>
+            <button
+                type="button"
+                class:list={[s["nav__toggle"], "btn btn--icon"]}
+                data-menu-toggle
+                data-is-active="false"
+                aria-label="toggle page menu"
+            >
+                <Icon
+                    name="mdi:menu"
+                    aria-hidden="true"
+                    focusable="false"
+                    data-toggle-icon
+                    data-is-active="true"
+                />
+                <Icon
+                    name="mdi:close"
+                    aria-hidden="true"
+                    focusable="false"
+                    data-toggle-icon
+                    data-is-active="false"
+                />
+            </button>
+        </div>
+    </Container>
+</nav>

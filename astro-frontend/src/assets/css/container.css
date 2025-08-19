@@ -1,0 +1,191 @@
+.content-grid {
+    --padding-inline: 1rem;
+    --min-width: calc(100% - (var(--padding-inline) * 2));
+    --max-width: 120ch;
+    --breakout-max-width: 125ch;
+    --breakout-size: calc((var(--breakout-max-width) - var(--max-width)) / 2);
+
+    display: grid;
+    grid-template-columns:
+        [full-width-start] minmax(var(--padding-inline), 1fr) [breakout-start] minmax(0, var(--breakout-size)) [content-start] min(var(--min-width), var(--max-width)) [content-end] minmax(0, var(--breakout-size)) [breakout-end] minmax(var(--padding-inline), 1fr) [full-width-end];
+
+    max-inline-size: calc(var(--max-width) * 1.5);
+    margin-inline: auto;
+    width: 100%;
+}
+
+.content-grid> :not(.breakout, .full-width) {
+    grid-column: content;
+}
+
+.content-grid>.breakout {
+    grid-column: breakout;
+}
+
+.content-grid>.full-width {
+    grid-column: full-width;
+}
+
+.content-grid>.full-height {
+    grid-row: 1 / -1;
+}
+
+/* Page Section */
+.page-section {
+    padding-block: var(--container-padding-block);
+}
+
+.page-section[data-highlight="false"] {
+    margin-block: var(--container-padding-lg);
+}
+
+.page-section__header h2 {
+    font-size: var(--heading-xl);
+    max-width: 40ch;
+    view-transition-name: pageHeading;
+}
+
+.page-section__header p {
+    max-width: 65ch;
+}
+
+
+/* Page Section Enhancements */
+[data-offscreen] {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 500px;
+}
+
+[data-highlight="true"] {
+    color: var(--clr-section-highlight-text);
+    background-color: var(--clr-section-highlight);
+}
+
+[data-highlight="true"] a:not([class]) {
+    color: currentColor;
+}
+
+[data-highlight="true"] * a:not([class]):hover {
+    --text: oklch(from var(--clr-section-highlight) calc(l - .7) c calc(h - 110));
+    color: var(--text);
+}
+
+[data-highlight="true"] button:hover {
+    color: var(--clr-neutral-900);
+    background-color: var(--clr-secondary-lighter);
+}
+
+[data-highlight="true"] h2 {
+    color: var(--clr-section-highlight-heading);
+}
+
+[data-highlight="false"] h2,
+[data-highlight="false"] .page-section__header h2 {
+    color: var(--clr-primary);
+}
+
+[data-highlight="true"] a:not([class]):visited,
+[data-highlight="true"] a:not([class]):active {
+    color: var(--clr-tertiary-lighter);
+}
+
+[data-highlight="true"] a:not([class]):hover {
+    color: var(--clr-secondary-dark);
+}
+
+@property --border-radius {
+    syntax: "<length>";
+    inherits: true;
+    initial-value: calc(infinity * 1px);
+}
+
+@property --background-color {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: oklch(from var(--clr-neutral-50) l c h / 65%);
+}
+
+@property --border-color {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: var(--clr-neutral-100);
+}
+
+@property --glow-deg {
+    syntax: "<angle>";
+    inherits: true;
+    initial-value: -90deg;
+}
+
+[data-glow="true"] {
+    --glow-surface: var(--clr-neutral-50);
+    --glow-color: conic-gradient(from var(--glow-deg), var(--clr-primary), var(--clr-tertiary), var(--clr-secondary), var(--clr-primary));
+    --glow-size: 0.5rem;
+    --glow-intensity: 0.5;
+    --border-size: 3px;
+    position: relative;
+    isolation: isolate;
+
+    border-radius: var(--size-0);
+    border: var(--border-size) solid transparent;
+    background:
+        linear-gradient(var(--glow-surface, white) 0 0) padding-box,
+        var(--glow-color) border-box;
+
+    /* transform: skew(5deg, 5deg); */
+    overflow: visible;
+    animation: glow 10s infinite;
+}
+
+a[data-glow="true"],
+button[data-glow="true"] {
+    --glow-size: 0.15rem;
+    --glow-intensity: 0.15;
+    --border-size: 2px;
+}
+
+[data-glow="true"]::before,
+[data-glow="true"]::after {
+    content: "";
+    position: absolute;
+    border-radius: inherit;
+}
+
+[data-glow="true"]::after {
+    background: var(--glow-color);
+    inset: -0.25rem;
+    /* these should match */
+    z-index: -2;
+    filter: blur(var(--glow-size, 0.5rem));
+    opacity: var(--glow-intensity, 0.5);
+}
+
+[data-glow="true"]::before {
+    background: var(--glow-surface, white);
+    inset: 0.25rem;
+    /* these should match */
+    z-index: -1;
+    filter: blur(var(--glow-size, 0.5rem));
+}
+
+[data-glass] {
+    --border-radius: calc(infinity * 1px);
+    --background-color: oklch(from var(--clr-neutral-50) l c h / 65%);
+    --border-color: var(--clr-neutral-100);
+
+    background-color: var(--background-color);
+    border: 1px solid var(--border-color);
+
+    border-radius: var(--border-radius);
+    transition: all var(--transition-exit-elastic-slow);
+
+    backdrop-filter: blur(15px);
+    overflow: hidden;
+    padding: var(--size-1) var(--size-4);
+}
+
+@keyframes glow {
+    100% {
+        --glow-deg: 270deg;
+    }
+}

@@ -1,0 +1,25 @@
+@media (min-width: 768px) {
+    .partners-grid__wrapper {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .partners-grid__image-grid {
+        width: 100%;
+        height: 100%;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        align-items: center;
+        justify-content: center;
+    }
+
+    .partners-grid__image_wrapper {
+        display: grid;
+        place-content: center;
+        outline:2px solid var(--clr-neutral-400);
+    }
+    .partners-grid__image_component {
+        width: 100%;
+        height: 100%;
+    }
+}

@@ -1,0 +1,20 @@
+.base-text {
+    color: light-dark(var(--clr-neutral-900), var(--clr-neutral-50));
+}
+
+.base-bg {
+    background-color: light-dark(var(--clr-neutral-50), var(--clr-neutral-900));
+    color: light-dark(var(--clr-neutral-900), var(--clr-neutral-50));
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}

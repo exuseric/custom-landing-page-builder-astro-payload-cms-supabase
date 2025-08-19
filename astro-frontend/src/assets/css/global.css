@@ -1,0 +1,54 @@
+@layer reset, tokens, base, components, utilities;
+
+@import url("./reset.css") layer(reset);
+@import url("./tokens.css") layer(tokens);
+@import url("./base.css") layer(base);
+@import url("./container.css") layer(components);
+@import url("./buttons-and-links.css") layer(components);
+@import url("./animations.css") layer(components);
+@import url("./utilities.css") layer(utilities);
+
+@-webkit-keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+
+@media (prefers-reduced-motion) {
+    ::view-transition-group(*),
+    ::view-transition-old(*),
+    ::view-transition-new(*) {
+        animation: none !important;
+    }
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+    /* animation: none; */
+    mix-blend-mode: normal;
+    height: 100%;
+    overflow: clip;
+}
+
+::view-transition-new(header):only-child {
+    animation: var(--transition-enter-elastic-medium) both fade-in;
+}
+
+::view-transition-old(header):only-child {
+    animation: var(--transition-exit-elastic-fast) both fade-out;
+}

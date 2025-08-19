@@ -1,0 +1,45 @@
+---
+import { fetchPage } from '@utils/payload';
+import { translateFooterItem } from '@utils/translations';
+
+interface Props {
+    title: string;
+    company: string;
+    url: string;
+    country: string;
+}
+
+import Container from "@components/Container.astro";
+import s from "./style.module.css";
+
+import { Image } from "astro:assets";
+const { title, company, url, country } = Astro.props;
+const copyright = translateFooterItem('copyright', country);
+const designedByText = translateFooterItem('designed_by', country);
+const { companyName, companyUrl, footerStyle } = await fetchPage(['companyName', 'companyUrl', 'footerStyle']);
+console.log(companyName, companyUrl, footerStyle);
+---
+
+<footer class:list={[s["footer"], "full-width"]}>
+    <Container>
+        <div class={s["footer__content"]}>
+            <p>
+                &copy; {new Date().getFullYear()}
+                {title.split("|")[0].trim()}. {copyright}
+            </p>
+            <p class={s["footer__logo"]}>
+                <Image
+                    src="/logoipsum.webp"
+                    alt="logoipsum"
+                    width={50}
+                    height={50}
+                    loading="lazy"
+                    decoding="async"
+                />
+                <a href={companyUrl} target="_blank" rel="noopener noreferrer">
+                    {designedByText} {companyName}
+                </a>
+            </p>
+        </div>
+    </Container>
+</footer>

@@ -1,0 +1,106 @@
+.slideshow_hero {
+  --col-count: 6;
+  --max-height: 600px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(var(--col-count),
+      calc(var(--max-height) / var(--col-count)));
+  overflow: hidden;
+  height: var(--max-height);
+}
+
+.hero__container {
+  grid-column: 1 / -1;
+  grid-row: -4 / -1;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  z-index: 3;
+}
+
+.slideshow_hero__slideshow {
+  grid-column: 1 / -1;
+  grid-row: 1 / -1;
+
+  position: relative;
+  isolation: isolate;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+}
+
+.slideshow_hero__overlay {
+  grid-column: 1 / -1;
+  grid-row: 1 / -1;
+
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse at 80% 0,
+      oklch(from var(--clr-primary-darker) l c h / 0.2),
+      transparent),
+    radial-gradient(ellipse at 0 80%,
+      oklch(from var(--clr-primary-darker) l c h),
+      transparent);
+}
+
+.slideshow_hero__slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  max-width: 100% !important;
+  object-fit: cover;
+  opacity: 0;
+  translate: 0 10px;
+  transition: none;
+}
+
+.slideshow_hero__content h1 {
+  color: var(--clr-primary-lighter);
+  font-size: var(--heading-4xl);
+  max-width: 25ch;
+}
+
+.slideshow_hero__content {
+  color: var(--clr-neutral-50);
+  max-width: 65ch;
+}
+
+/* .slideshow_hero__slide[data-slide-active="false"] {
+  opacity: 0;
+} */
+.slideshow_hero__slide[data-slide-active="true"] {
+  opacity: 1;
+  animation: fade-slide-in var(--transition-complex-elastic-slow) both;
+}
+
+.slideshow_hero__slide[data-sliding-out="true"] {
+  animation: fade-slide-out var(--transition-complex-elastic-slow) both;
+}
+
+@keyframes fade-slide-in {
+  0% {
+    opacity: 0;
+    translate: 0 10px;
+  }
+
+  100% {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes fade-slide-out {
+  0% {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  100% {
+    opacity: 0;
+    translate: 0 10px;
+  }
+}

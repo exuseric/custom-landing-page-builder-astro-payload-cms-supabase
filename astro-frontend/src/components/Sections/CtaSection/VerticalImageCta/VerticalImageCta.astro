@@ -1,0 +1,41 @@
+---
+import type { TwoImageCallToActionBlock, Media } from "@utils/payload/types";
+interface Props extends TwoImageCallToActionBlock {
+    coreValues: string;
+}
+
+import s from "./style.module.css";
+import CustomImage from "@components/CustomImage.astro";
+import Container from "@components/Container.astro";
+import { extractLexicalText } from "@utils/payload/helpers";
+const props = Astro.props;
+---
+
+<section
+    class:list={[s["vertical_cta content_section"], "page-section"]}
+    data-offscreen
+    aria-labelledby={props.id}
+>
+    <Container>
+        <div class="col-grid-12">
+            <div class={s["vertical-section__wrapper"]}>
+                <div class={s["vertical-section__images"]}>
+                    {
+                        props.images.map((image: any, idx: number) => (
+                            <CustomImage
+                                image={image.image as Media}
+                                classlist={s[`vertical-section__image`]}
+                                size="small"
+                                eager={false}
+                            />
+                        ))
+                    }
+                </div>
+                <div class={s["vertical-section__content"]}>
+                    <h2 id={props.id}>{props.title}</h2>
+                    <slot set:html={extractLexicalText(props.body)} />
+                </div>
+            </div>
+        </div>
+    </Container>
+</section>

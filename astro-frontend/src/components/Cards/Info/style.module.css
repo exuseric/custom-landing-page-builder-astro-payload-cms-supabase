@@ -1,0 +1,21 @@
+.info_card {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    flex-flow: var(--direction) wrap;
+    align-items: flex-start;
+    justify-content: start;
+    gap: var(--size-2);
+}
+
+.info_card li {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    gap: var(--size-2);
+}
+
+/* .info_card a {
+    text-decoration: none;
+} */

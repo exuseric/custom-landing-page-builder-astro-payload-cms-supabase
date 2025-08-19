@@ -1,0 +1,119 @@
+---
+import { fetchPage } from "@utils/payload";
+import { SEO } from "astro-seo";
+import { AstroFont } from "astro-font";
+
+import { languages } from "@utils/translations";
+import { fonts } from "@utils/fonts";
+
+const { seo, title, url, country } = await fetchPage([
+    "seo",
+    "title",
+    "url",
+    "country",
+]);
+---
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="dns-prefetch" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preconnect" href="https://www.google-analytics.com" />
+<link rel="dns-prefetch" href="https://www.google-analytics.com" />
+<link rel="preconnect" href="https://www.googletagmanager.com" />
+<link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+
+<link rel="preload" as="style" href="/assets/index.min.css" />
+
+<link rel="sitemap" href="/sitemap.xml" />
+
+<link rel="alternate" href={url} hreflang={languages[country]} />
+<link rel="alternate" href={url} hreflang="x-default" />
+
+<link
+    rel="icon"
+    type="image/jpg"
+    sizes="16x16"
+    href="/favicon/favicon-16x16.jpg"
+/>
+<link
+    rel="icon"
+    type="image/jpg"
+    sizes="32x32"
+    href="/favicon/favicon-32x32.jpg"
+/>
+<link
+    rel="apple-touch-icon"
+    sizes="180x180"
+    href="/favicon/apple-touch-icon.jpg"
+/>
+<link rel="icon" href="/favicon/favicon.ico" />
+<link rel="manifest" href="/favicon/manifest.webmanifest.json" />
+
+<SEO
+    title={seo.metaTitle}
+    description={seo.metaDescription}
+    openGraph={{
+        basic: {
+            title,
+            image: `${url}/assets/`,
+            type: "website",
+            url,
+        },
+    }}
+    twitter={{
+        site: url,
+        card: "summary_large_image",
+        creator: "@sampleCreator",
+        title,
+        description: seo.metaDescription,
+        image: `${url}/assets/`,
+    }}
+    extend={{
+        meta: [
+            {
+                property: "og:description",
+                content: seo.metaDescription,
+            },
+            { property: "og:site_name", content: title },
+        ],
+    }}
+/>
+<slot set:html={seo.searchConsole} />
+<slot name="analytics" set:html={seo.analytics} />
+
+<AstroFont
+    config={[
+        {
+            name: fonts.regular.name,
+            src: [
+                {
+                    style: "normal",
+                    weight: fonts.regular.weight,
+                    path: fonts.regular.url,
+                },
+                {
+                    style: "normal",
+                    weight: fonts.bold.weight,
+                    path: fonts.bold.url,
+                },
+            ],
+            preload: true,
+            display: "swap",
+            selector: "body",
+            fallback: "sans-serif",
+        },
+        {
+            name: fonts.sansSerifHeading.name,
+            src: [
+                {
+                    style: "normal",
+                    weight: fonts.sansSerifHeading.weight,
+                    path: fonts.sansSerifHeading.url,
+                },
+            ],
+            preload: true,
+            display: "swap",
+            selector: "h1,h2",
+            fallback: "sans-serif",
+        },
+    ]}
+/>

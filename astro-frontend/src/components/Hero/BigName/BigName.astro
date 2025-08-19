@@ -1,0 +1,26 @@
+---
+import type { HeroBlock } from "@utils/payload/types";
+interface Props extends HeroBlock {}
+import Container from "@components/Container.astro";
+import s from "./style.module.css";
+import CustomImage from "@components/CustomImage.astro";
+const props = Astro.props;
+---
+
+<header class={s["big_name_hero"]} data-centered="true">
+    <Container>
+        <div class:list={[s["big_name_hero__wrapper"], "full-height"]}>
+            <article class={s["big_name_hero__content"]}>
+                <h1>{props.heading}</h1>
+                <p>{props.excerpt}</p>
+            </article>
+        </div>
+        <div class:list={[s["big_name_hero__overlay"], "full-width", "full-height"]}></div>
+        <CustomImage
+            image={props.cover}
+            classlist="big_name_hero__image full-width full-height"
+            size="large"
+            eager={true}
+        />
+    </Container>
+</header>

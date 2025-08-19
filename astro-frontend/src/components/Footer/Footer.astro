@@ -1,0 +1,15 @@
+---
+import FloatingFooter from "./FloatingFooter/FloatingFooter.astro";
+import TinyFooter from "./TinyFooter/TinyFooter.astro";
+
+const {company, title, style, country, url} = Astro.props
+
+const footerProps = {
+    title,
+    company,
+    url,
+    country
+}
+---
+{style === 'default' && <FloatingFooter {...footerProps} />}
+{style === 'tiny' && <TinyFooter {...footerProps} />}

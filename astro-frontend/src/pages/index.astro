@@ -1,0 +1,39 @@
+---
+import { languages } from "@utils/translations";
+import PageNavigation from "@components/PageNavigation/PageNavigation.astro";
+import "@assets/css/global.css";
+import Sections from "@components/Sections/Sections.astro";
+import Footer from "@components/Footer/Footer.astro";
+import Head from "@components/Head.astro";
+import { fetchPage } from "@utils/payload";
+
+const { country, themeColor, footerStyle, title} = await fetchPage([
+	"country",
+	"themeColor",
+	"footerStyle",
+	"title"
+]);
+---
+
+<!doctype html>
+<html lang={languages[country]}>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<meta name="color-scheme" content="light" />
+		<meta name="theme-color" content={themeColor} />
+		<meta name="robots" content="index, follow" />
+
+		<Head />
+
+		<script src="@utils/navigationEvents.ts"></script>
+	</head>
+	<body>
+		<PageNavigation />
+		<main>
+			<Sections />
+		</main>
+		<Footer title={title} style={footerStyle}/>
+	</body>
+</html>
+<style define:vars={{ themeColor }} is:global></style>

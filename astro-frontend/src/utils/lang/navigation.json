@@ -1,0 +1,28 @@
+{
+  "en": {
+    "nav": {
+      "home": "Home",
+      "about": "About",
+      "services": "Services",
+      "products": "Products",
+      "contact": "Contact"
+    },
+    "footer": {
+      "copyright": "All Rights Reserved",
+      "designed_by": "Designed by"
+    }
+  },
+  "pt": {
+    "nav": {
+      "home": "Início",
+      "about": "Sobre",
+      "services": "Serviços",
+      "products": "Produtos",
+      "contact": "Contato"
+    },
+    "footer": {
+      "copyright": "Todos os direitos reservados",
+      "designed_by": "Desenhado por"
+    }
+  }
+}

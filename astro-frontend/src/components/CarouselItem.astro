@@ -1,0 +1,38 @@
+---
+export interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+---
+
+<div class={`carousel-item ${className}`}>
+  <slot />
+</div>
+
+<style>
+  .carousel-item {
+    flex: 0 0 auto;
+    min-width: 0;
+  }
+</style>
+
+<!-- Usage Example in a page: -->
+<!-- 
+---
+import Carousel from '../components/Carousel.astro';
+import CarouselItem from '../components/CarouselItem.astro';
+---
+
+<Carousel>
+  <CarouselItem>
+    <div class="card">Content 1</div>
+  </CarouselItem>
+  <CarouselItem>
+    <div class="card">Content 2</div>
+  </CarouselItem>
+  <CarouselItem>
+    <div class="card">Content 3</div>
+  </CarouselItem>
+</Carousel>
+-->

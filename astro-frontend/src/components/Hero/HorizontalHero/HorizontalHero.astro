@@ -1,0 +1,25 @@
+---
+import type { HeroBlock } from "@utils/payload/types";
+interface Props extends HeroBlock {}
+
+import s from "./style.module.css";
+import Container from "@components/Container.astro";
+import CustomImage from "@components/CustomImage.astro";
+
+const { heading, excerpt, cover } = Astro.props;
+---
+
+<header class:list={[s["two_column_hero"], "full-width"]}>
+    <Container>
+        <div class={s["two_column_hero__wrapper"]}>
+            <article class={s["two_column_hero__content"]}>
+                <h1>{heading}</h1>
+                <p>{excerpt}</p>
+            </article>
+
+            <div class={s["two_column_hero__image_wrapper"]}>
+                <CustomImage image={cover} classlist={s["two_column_hero__image"]} size="large" eager={true} />
+            </div>
+        </div>
+    </Container>
+</header>

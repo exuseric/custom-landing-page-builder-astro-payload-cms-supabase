@@ -1,0 +1,47 @@
+---
+import type { ImageGridCallToActionBlock, Media } from "@utils/payload/types";
+interface Props extends ImageGridCallToActionBlock {
+    coreValues: string;
+}
+
+import s from "./style.module.css";
+import CustomImage from "@components/CustomImage.astro";
+import Container from "@components/Container.astro";
+import { extractLexicalText } from "@utils/payload/helpers";
+const props = Astro.props;
+---
+
+<section class:list={[s["content_section"], "page-section"]} data-highlight="false" data-offscreen aria-labelledby={props.id}>
+    <Container>
+        <div
+            class={s["three_image_cta__container"]}
+        >
+            <div class={s["three_image_cta__content_wrapper"]}>
+                <article class={s["three_image_cta__content"]}>
+                    <header class="page-section__header">
+                        <h2 id={props.id}>{props.title}</h2>
+                    </header>
+                    <slot set:html={extractLexicalText(props.body)} />
+    
+                    <div class="btn_wrapper">
+                        <a href="#contact" class="btn btn--secondary btn--outline">
+                            Let's Talk
+                        </a>
+                    </div>
+                </article>
+            </div>
+            <div class={s["three_image_cta__image_wrapper"]}>
+                {
+                    props.images.map((image, idx: number) => (
+                        <CustomImage
+                            image={image.image}
+                            classlist={s["three_image_cta___image"]}
+                            size="medium"
+                            eager={false}
+                        />
+                    ))
+                }
+            </div>
+        </div>
+    </Container>
+</section>

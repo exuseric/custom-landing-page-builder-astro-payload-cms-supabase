@@ -1,0 +1,59 @@
+---
+import { fetchPage } from "@utils/payload"
+import ContentWithMedia from "@components/Sections/ContentWithMedia/ContentWithMedia.astro"
+import ContentWithGrid from "@components/Sections/ContentWithGrid/ContentWithGrid.astro"
+import WhyChooseUsColumn from "@components/Sections/Stats/WhyChooseUsColumn/WhyChooseUsColumn.astro"
+import SimpleCallToAction from "@components/Sections/CtaSection/SimpleCallToAction/SimpleCallToAction.astro"
+import SimpleHero from "@components/Hero/SimpleHero.astro"
+import SimpleTestimonial from "@components/Sections/Testimonial/SimpleTestimonial/SimpleTestimonial.astro"
+import ContactSection from "@components/Sections/Contact Sections/ContactSection.astro"
+import ThreeImageCta from "@components/Sections/CtaSection/ThreeImageCta/ThreeImageCta.astro"
+import WhyChooseUsGrid from "@components/Sections/Stats/WhyChooseUsGrid/WhyChooseUsGrid.astro"
+import VerticalImageCta from "@components/Sections/CtaSection/VerticalImageCta/VerticalImageCta.astro"
+import WhyChooseUsInteractive from "@components/Sections/Stats/WhyChooseUsInteractive/WhyChooseUsInteractive.astro"
+import SymbioticAbout from "@components/Sections/SymbioticAbout/SymbioticAbout.astro"
+import RoundedAbout from "@components/Sections/RoundedAbout/RoundedAbout.astro"
+import TestimonialCarousel from "./Testimonial/TestimonialCarousel/TestimonialCarousel.astro"
+import HeroWithSlideshow from "@components/Hero/HeroWithSlideshow/HeroWithSlideshow.astro"
+
+const {blocks, socialLinks, operatingHours, coreValues} = await fetchPage(['blocks', 'socialLinks', 'operatingHours', 'coreValues'])
+---
+
+{
+    blocks.map(block => {
+        switch (block.blockType) {
+            case 'simple-hero':
+                return <SimpleHero {...block}/>
+            case 'slideshow-hero':
+                return <HeroWithSlideshow {...block}/>
+            case 'content-with-media':
+                return <ContentWithMedia {...block}/>
+            case 'content-with-grid':
+                return <ContentWithGrid {...block} />
+            case 'symbiotic-about':
+                return <SymbioticAbout {...block} />
+            case 'rounded-about':
+                return <RoundedAbout {...block} />
+            case 'why-choose-us-column':
+                return <WhyChooseUsColumn {...block}/>
+            case 'why-choose-us-grid':
+                return <WhyChooseUsGrid {...block} />
+            case 'why-choose-us-interactive':
+                return <WhyChooseUsInteractive {...block} />
+            case 'simple-call-to-action':
+                return <SimpleCallToAction {...block}/>
+            case 'image-grid-cta':
+                return <ThreeImageCta {...block} {coreValues}/>
+            case 'two-image-cta':
+                return <VerticalImageCta {...block} {coreValues}/>
+            case 'simple-testimonial':
+                return <SimpleTestimonial {...block} />
+            // case 'carousel-testimonial':
+            //     return <TestimonialCarousel {...block} />
+            case 'simple-contact':
+                return <ContactSection {...block} {socialLinks} {operatingHours}/>
+            default:
+                break;
+        }
+    })
+}

@@ -1,0 +1,110 @@
+---
+import Container from "@components/Container.astro";
+import { Icon } from "astro-iconify";
+import CustomImage from "@components/CustomImage.astro";
+import { translateNavItem } from "@utils/translations";
+import s from "./style.module.css";
+
+import InfoCard from "@components/Cards/Info/InfoCard.astro";
+type Link = {
+    id: string;
+    name: string;
+    anchorId: string;
+    style: string;
+};
+const {
+    navigation: { logo, menuItems },
+    fixedMenu,
+    blackText,
+    country,
+    title,
+} = Astro.props;
+
+const pageLinks = menuItems.map((link: Link) =>
+    link.name.toLocaleLowerCase() === "home"
+        ? { ...link, name: translateNavItem("home", country), anchorId: "/" }
+        : {
+              ...link,
+              name: translateNavItem(link.name, country),
+              anchorId: `#${link.anchorId.split(" ").join("-")}`,
+          },
+);
+
+// console.log(logo, "logo in simple nav");
+---
+
+<nav
+    class={s["simple-nav"]}
+    data-nav-bar
+    data-nav
+    data-is-active="false"
+    data-menu-toggled="false"
+    data-fixed-menu={fixedMenu}
+    data-black-text={blackText}
+    aria-label="Main navigation"
+>
+    <Container>
+        <div class={s["simple-nav__wrapper"]}>
+            <a class:list={[s["simple-nav__logo"], "btn btn--text"]} href="/" aria-label={`${title.trim()} - Go to homepage`}>
+               {logo.url.length > 0 && <CustomImage
+                    eager={true}
+                    image={logo}
+                    classlist={s["simple-nav__logo-image"]}
+                    size="logo"
+                />
+                }
+                
+                <!-- <span class={s["simple-nav__logo-text"]}>{title}</span> -->
+            </a>
+
+            <ul
+                id="main-navigation-menu"
+                class={s["simple-nav__menu"]}
+                data-menu
+                data-is-active="false"
+                aria-label="Main menu"
+                role="menubar"
+            >
+                {
+                    pageLinks.map((link: Link) => (
+                        <li role="none">
+                            <a
+                                href={link.anchorId}
+                                class:list={[s["simple-nav__link"], "btn", link.style.toLocaleLowerCase() === "primary" ? "btn--primary" : link.style.toLocaleLowerCase() === "secondary" ? "btn--secondary" : "btn--text"]}
+                                role="menuitem"
+                            >
+                                {link.name}
+                            </a>
+                        </li>
+                    ))
+                }
+            </ul>
+
+            <button
+                type="button"
+                class={s["simple-nav__toggle"]}
+                data-menu-toggle
+                data-is-active="false"
+                aria-label="Open main menu"
+                aria-controls="main-navigation-menu"
+                aria-expanded="false"
+            >
+                <span class="sr-only">Menu</span>
+                <Icon
+                    name="mdi:menu"
+                    aria-hidden="true"
+                    focusable="false"
+                    data-toggle-icon
+                    data-is-active="true"
+                />
+                <Icon
+                    name="mdi:close"
+                    aria-hidden="true"
+                    focusable="false"
+                    data-toggle-icon
+                    data-is-active="false"
+                />
+            </button>
+        </div>
+    </Container>
+</nav>

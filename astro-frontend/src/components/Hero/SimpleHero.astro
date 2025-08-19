@@ -1,0 +1,23 @@
+---
+import type { HeroBlock } from "@utils/payload/types";
+interface Props extends HeroBlock {}
+
+import HorizontalHero from "./HorizontalHero/HorizontalHero.astro";
+import DefaultHero from "./DefaultHero/DefaultHero.astro";
+import VerticalHero from "./VerticalHero/VerticalHero.astro";
+import AlternateVerticalHero from "./AlternateVerticalHero/AlternateVerticalHero.astro";
+import StylisedHorizontalHero from "./StylisedHorizontalHero/StylisedHorizontalHero.astro";
+import BubbleImages from "./BubbleImages/BubbleImages.astro";
+import SplitHero from "./SplitHero/SplitHero.astro";
+import WavyHero from "./WavyHero/WavyHero.astro";
+
+const props = Astro.props;
+---
+
+{props.type === "default" && <DefaultHero {...props} />}
+{props.type === "horizontal" && <HorizontalHero {...props} />}
+{props.type === "vertical" && <VerticalHero {...props} />}
+{props.type === "stylised horizontal" && <StylisedHorizontalHero {...props} />}
+{props.type === "alternate vertical" && <AlternateVerticalHero {...props} />}
+{props.type === "bubble" && <BubbleImages {...props} />}
+{props.type === "split" && <SplitHero {...props} />}

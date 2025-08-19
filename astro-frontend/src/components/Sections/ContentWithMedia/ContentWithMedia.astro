@@ -1,0 +1,40 @@
+---
+import type { ContentWithMediaBlock } from "@utils/payload/types";
+interface Props extends ContentWithMediaBlock {}
+import Container from "@components/Container.astro";
+import s from "./style.module.css";
+import CustomImage from "@components/CustomImage.astro";
+import { extractLexicalText } from "@utils/payload/helpers";
+const props = Astro.props;
+---
+
+<section
+    class:list={[s["content-with-media"], "page-section"]}
+    data-highlight={props.highlight}
+    id={props["anchor id"]?.split(" ").join("-")}
+    data-offscreen
+    data-animate="fade-slide"
+    aria-labelledby={props.id}
+>
+    <Container>
+        <div class={s["content-with-media__content_wrapper"]} data-position={props.position}>
+            <article class={s["content-with-media__article"]}>
+                <header class={s["content-with-media__header"]}>
+                    <h2 id={props.id}>{props.title}</h2>
+                </header>
+                <div class={s["content-with-media__content"]}>
+                    <slot set:html={extractLexicalText(props.body)} />
+                </div>
+            </article>
+            <div class={s["content-with-media__image_wrapper"]}>
+                <CustomImage
+                    classlist={s["content-with-media__image"]}
+                    eager={false}
+                    size="medium"
+                    image={props.image}
+                    data-animate="slide-left"
+                />
+            </div>
+        </div>
+    </Container>
+</section>

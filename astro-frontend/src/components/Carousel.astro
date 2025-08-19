@@ -1,0 +1,446 @@
+---
+// Carousel.astro
+export interface Props {
+  id?: string;
+  class?: string;
+  autoplay?: boolean;
+  autoplayDelay?: number;
+  infinite?: boolean;
+  pauseOnHover?: boolean;
+  pauseOnFocus?: boolean;
+  keyboard?: boolean;
+  touch?: boolean;
+  showIndicators?: boolean;
+  showNavigation?: boolean;
+  breakpoints?: {
+    [key: number]: number;
+  };
+}
+
+const {
+  id = `carousel-${Math.random().toString(36).substr(2, 9)}`,
+  class: className = '',
+  autoplay = true,
+  autoplayDelay = 3000,
+  infinite = true,
+  pauseOnHover = true,
+  pauseOnFocus = true,
+  keyboard = true,
+  touch = true,
+  showIndicators = true,
+  showNavigation = true,
+  breakpoints = {
+    480: 1,
+    768: 2,
+    1024: 3
+  }
+} = Astro.props;
+
+// Generate unique class names to avoid conflicts
+const carouselClass = `carousel-${id}`;
+---
+
+<div 
+  id={id}
+  class={`carousel ${carouselClass} ${className}`}
+  data-carousel-config={JSON.stringify({
+    autoplay,
+    autoplayDelay,
+    infinite,
+    pauseOnHover,
+    pauseOnFocus,
+    keyboard,
+    touch,
+    breakpoints
+  })}
+>
+  <div class="carousel-track">
+    <slot />
+  </div>
+  
+  {showNavigation && (
+    <>
+      <button class="carousel-nav carousel-prev" aria-label="Previous slide">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="15,18 9,12 15,6"></polyline>
+        </svg>
+      </button>
+      <button class="carousel-nav carousel-next" aria-label="Next slide">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="9,18 15,12 9,6"></polyline>
+        </svg>
+      </button>
+    </>
+  )}
+  
+  {showIndicators && (
+    <div class="carousel-indicators"></div>
+  )}
+</div>
+
+<style define:vars={{ carouselId: id }}>
+  .carousel {
+    position: relative;
+    overflow: hidden;
+    max-width: 100%;
+  }
+
+  .carousel-track {
+    display: flex;
+    transition: transform 0.3s ease;
+    gap: 1rem;
+  }
+
+  .carousel-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: all 0.2s ease;
+  }
+
+  .carousel-nav:hover {
+    background: rgba(0, 0, 0, 0.9);
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  .carousel-nav:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: translateY(-50%) scale(1);
+  }
+
+  .carousel-prev {
+    left: 12px;
+  }
+
+  .carousel-next {
+    right: 12px;
+  }
+
+  .carousel-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .carousel-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: none;
+    background: #ccc;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .carousel-indicator:hover {
+    background: #999;
+    transform: scale(1.2);
+  }
+
+  .carousel-indicator.active {
+    background: #007bff;
+    transform: scale(1.2);
+  }
+
+  /* Responsive styles */
+  @media (max-width: 480px) {
+    .carousel-nav {
+      width: 36px;
+      height: 36px;
+    }
+    
+    .carousel-prev {
+      left: 8px;
+    }
+    
+    .carousel-next {
+      right: 8px;
+    }
+  }
+</style>
+
+<script>
+  class AstroCarousel {
+    constructor(container) {
+      this.container = container;
+      this.config = JSON.parse(container.dataset.carouselConfig || '{}');
+      this.track = container.querySelector('.carousel-track');
+      this.items = this.track.querySelectorAll(':scope > *'); // Direct children only
+      this.prevBtn = container.querySelector('.carousel-prev');
+      this.nextBtn = container.querySelector('.carousel-next');
+      this.indicators = container.querySelector('.carousel-indicators');
+      
+      this.currentIndex = 0;
+      this.autoplayInterval = null;
+      this.isTransitioning = false;
+      
+      if (this.items.length > 0) {
+        this.init();
+      }
+    }
+
+    init() {
+      this.updateItemsPerView();
+      this.createIndicators();
+      this.bindEvents();
+      this.updateCarousel();
+      
+      if (this.config.autoplay) {
+        this.startAutoplay();
+      }
+    }
+
+    updateItemsPerView() {
+      const width = window.innerWidth;
+      const breakpoints = this.config.breakpoints || { 480: 1, 768: 2, 1024: 3 };
+      
+      this.itemsPerView = breakpoints[480] || 1;
+      
+      const sortedBreakpoints = Object.keys(breakpoints)
+        .map(Number)
+        .sort((a, b) => a - b);
+        
+      for (const breakpoint of sortedBreakpoints) {
+        if (width >= breakpoint) {
+          this.itemsPerView = breakpoints[breakpoint];
+        }
+      }
+      
+      this.maxIndex = this.config.infinite 
+        ? this.items.length - 1 
+        : Math.max(0, this.items.length - this.itemsPerView);
+    }
+
+    createIndicators() {
+      if (!this.indicators) return;
+      
+      this.indicators.innerHTML = '';
+      const indicatorCount = this.config.infinite 
+        ? this.items.length 
+        : this.maxIndex + 1;
+        
+      for (let i = 0; i < indicatorCount; i++) {
+        const dot = document.createElement('button');
+        dot.className = 'carousel-indicator';
+        dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+        dot.addEventListener('click', () => this.goToSlide(i));
+        this.indicators.appendChild(dot);
+      }
+    }
+
+    bindEvents() {
+      if (this.prevBtn) {
+        this.prevBtn.addEventListener('click', () => this.previousSlide());
+      }
+      if (this.nextBtn) {
+        this.nextBtn.addEventListener('click', () => this.nextSlide());
+      }
+      
+      if (this.config.keyboard) {
+        document.addEventListener('keydown', (e) => {
+          if (this.container.contains(document.activeElement)) {
+            if (e.key === 'ArrowLeft') {
+              e.preventDefault();
+              this.previousSlide();
+            }
+            if (e.key === 'ArrowRight') {
+              e.preventDefault();
+              this.nextSlide();
+            }
+          }
+        });
+      }
+
+      if (this.config.touch) {
+        this.setupTouchEvents();
+      }
+
+      if (this.config.autoplay) {
+        if (this.config.pauseOnHover) {
+          this.container.addEventListener('mouseenter', () => this.stopAutoplay());
+          this.container.addEventListener('mouseleave', () => this.startAutoplay());
+        }
+        if (this.config.pauseOnFocus) {
+          this.container.addEventListener('focusin', () => this.stopAutoplay());
+          this.container.addEventListener('focusout', () => this.startAutoplay());
+        }
+      }
+
+      window.addEventListener('resize', () => this.handleResize());
+    }
+
+    setupTouchEvents() {
+      let startX = 0;
+      let startY = 0;
+      let isDragging = false;
+
+      this.track.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        isDragging = true;
+      }, { passive: true });
+
+      this.track.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        
+        const currentX = e.touches[0].clientX;
+        const currentY = e.touches[0].clientY;
+        const diffX = Math.abs(currentX - startX);
+        const diffY = Math.abs(currentY - startY);
+        
+        if (diffX > diffY && diffX > 10) {
+          e.preventDefault();
+        }
+      }, { passive: false });
+
+      this.track.addEventListener('touchend', (e) => {
+        if (!isDragging) return;
+        
+        const endX = e.changedTouches[0].clientX;
+        const diff = startX - endX;
+        
+        if (Math.abs(diff) > 50) {
+          diff > 0 ? this.nextSlide() : this.previousSlide();
+        }
+        
+        isDragging = false;
+      }, { passive: true });
+    }
+
+    previousSlide() {
+      if (this.isTransitioning) return;
+      
+      if (this.config.infinite) {
+        this.currentIndex = this.currentIndex > 0 ? this.currentIndex - 1 : this.items.length - 1;
+      } else {
+        this.currentIndex = Math.max(0, this.currentIndex - 1);
+      }
+      this.updateCarousel();
+    }
+
+    nextSlide() {
+      if (this.isTransitioning) return;
+      
+      if (this.config.infinite) {
+        this.currentIndex = this.currentIndex < this.items.length - 1 ? this.currentIndex + 1 : 0;
+      } else {
+        this.currentIndex = Math.min(this.maxIndex, this.currentIndex + 1);
+      }
+      this.updateCarousel();
+    }
+
+    goToSlide(index) {
+      if (this.isTransitioning) return;
+      
+      const maxAllowedIndex = this.config.infinite ? this.items.length - 1 : this.maxIndex;
+      this.currentIndex = Math.max(0, Math.min(index, maxAllowedIndex));
+      this.updateCarousel();
+    }
+
+    updateCarousel() {
+      if (!this.items.length) return;
+      
+      this.isTransitioning = true;
+      
+      const firstItem = this.items[0];
+      const itemWidth = firstItem.offsetWidth;
+      const computedStyle = getComputedStyle(this.track);
+      const gap = parseInt(computedStyle.gap) || 0;
+      
+      const translateX = -(this.currentIndex * (itemWidth + gap));
+      this.track.style.transform = `translateX(${translateX}px)`;
+      
+      this.updateNavigationButtons();
+      this.updateIndicators();
+      
+      setTimeout(() => {
+        this.isTransitioning = false;
+      }, 300);
+    }
+
+    updateNavigationButtons() {
+      if (!this.prevBtn || !this.nextBtn) return;
+      
+      if (this.config.infinite) {
+        this.prevBtn.disabled = false;
+        this.nextBtn.disabled = false;
+      } else {
+        this.prevBtn.disabled = this.currentIndex === 0;
+        this.nextBtn.disabled = this.currentIndex >= this.maxIndex;
+      }
+    }
+
+    updateIndicators() {
+      if (!this.indicators) return;
+      
+      const indicatorButtons = this.indicators.querySelectorAll('.carousel-indicator');
+      indicatorButtons.forEach((indicator, i) => {
+        indicator.classList.toggle('active', i === this.currentIndex);
+      });
+    }
+
+    handleResize() {
+      clearTimeout(this.resizeTimeout);
+      this.resizeTimeout = setTimeout(() => {
+        const oldItemsPerView = this.itemsPerView;
+        this.updateItemsPerView();
+        
+        if (oldItemsPerView !== this.itemsPerView) {
+          this.currentIndex = Math.min(this.currentIndex, this.maxIndex);
+          this.createIndicators();
+        }
+        
+        this.updateCarousel();
+      }, 150);
+    }
+
+    startAutoplay() {
+      if (!this.config.autoplay) return;
+      
+      this.stopAutoplay();
+      this.autoplayInterval = setInterval(() => {
+        this.nextSlide();
+      }, this.config.autoplayDelay || 3000);
+    }
+
+    stopAutoplay() {
+      if (this.autoplayInterval) {
+        clearInterval(this.autoplayInterval);
+        this.autoplayInterval = null;
+      }
+    }
+  }
+
+  // Initialize carousels after DOM is loaded
+  function initCarousels() {
+    const carousels = document.querySelectorAll('[data-carousel-config]') as NodeListOf<HTMLDivElement>;
+    carousels.forEach((carousel) => {
+      if (!carousel.carouselInstance) {
+        carousel.carouselInstance = new AstroCarousel(carousel);
+      }
+    });
+  }
+
+  // Handle both initial load and navigation events
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCarousels);
+  } else {
+    initCarousels();
+  }
+
+  // Re-initialize on Astro page navigation
+  document.addEventListener('astro:page-load', initCarousels);
+</script>

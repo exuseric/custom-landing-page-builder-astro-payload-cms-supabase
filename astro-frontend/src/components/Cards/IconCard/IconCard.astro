@@ -1,0 +1,39 @@
+---
+interface Card {
+    [key: string]: {
+        [key: string]: any;
+    };
+}
+interface Props {
+    cards: Card[];
+    direction?: "column" | "row";
+}
+import s from "./style.module.css";
+import { Icon } from "astro-iconify";
+const { cards, direction = "row" } = Astro.props;
+---
+
+<div class={s["icon_card"]} style={`--direction: ${direction};`}>
+    {
+        cards.map((card: Card) => (
+            <div class={s["icon_card__item"]}>
+                <div class={s["icon_card__header"]}>
+                    <div class={s["icon_card__icon_wrapper"]}>
+                        {card.icon_name && (
+                            <Icon
+                                name={card.icon_name}
+                                aria-hidden="true"
+                                focusable="false"
+                                class={s["icon_card__icon"]}
+                            />
+                        )}
+                    </div>
+                    <h3 class={s["icon_card__title"]}>{card.title}</h3>
+                </div>
+                <div>
+                    <slot set:html={card.content} />
+                </div>
+            </div>
+        ))
+    }
+</div>

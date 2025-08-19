@@ -1,0 +1,30 @@
+---
+import { fetchPage } from "@utils/payload";
+import type { HeroBlock,  } from "@utils/payload/types";
+
+const {navigation, blocks, country, title} = await fetchPage(["navigation", "blocks", "country", "title"])
+const hero = blocks.find(block => block.blockType === 'simple-hero' || block.blockType === 'slideshow-hero') || {} as any
+// import BasicFLoatingNav from "@components/PageNavigation/Navigation/FixedNav/FixedNav.astro";
+// import CenterNav from "./CenterNav/CenterNav.astro";
+import FloatingPill from "@components/PageNavigation/FloatingPill/FloatingPill.astro";
+import ExpandingPillNav from "./ExpandingPillNav/ExpandingPillNav.astro";
+import SimpleNav from "./SimpleNav/SimpleNav.astro";
+const props = Astro.props;
+
+const fixedMenu = ["default","horizontal with image", "black modern", "gradient", "default horizontal", "big name"].includes(hero.type as string) ? true : false;
+const showSimpleNav = ["default","vertical","alternate vertical", "default vertical", "two column", "stylised horizontal", "horizontal"].includes(hero.type as string)
+const showPillNav = ["big name"].includes(hero.type as string)
+const expandingNav = ["split"].includes(hero.type as string)
+
+const navProps = {
+    title,
+    navigation,
+    country,
+    fixedMenu: fixedMenu,
+}
+
+---
+{showSimpleNav && <SimpleNav {...navProps}/>}
+{showPillNav && <FloatingPill {...navProps}/>}
+
+{expandingNav && <ExpandingPillNav {...navProps}/>}

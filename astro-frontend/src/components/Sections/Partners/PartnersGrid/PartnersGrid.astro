@@ -1,0 +1,44 @@
+---
+import Container from "@components/Container.astro";
+import CustomImage from "@components/CustomImage.astro";
+
+import s from "./style.module.css";
+
+const { data, cards } = Astro.props;
+interface Card {
+  expand: {
+    image: {
+      image: string;
+      alt: string;
+      fit: string;
+      position: string;
+    };
+  };
+}
+---
+
+<div class:list={[s["partners-grid"], "page-section"]} data-offscreen>
+  <Container>
+    <div class={s["partners-grid__wrapper"]}>
+      <div class={s["content"]}>
+        <h2>{data.title}</h2>
+      </div>
+      <div class={s["partners-grid__image-grid"]}>
+        {
+          cards.map((card: Card) => (
+            <div class={s["partners-grid__image_wrapper"]}>
+              {card.expand.image && (
+                <CustomImage
+                  image={card.expand.image}
+                  classlist={s["partners-grid__image_component"]}
+                  size="small"
+                  eager={false}
+                />
+              )}
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </Container>
+</div>

@@ -1,0 +1,361 @@
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --snappy-bounce-ease: linear;
+        --transition-hover: none;
+        --transition-colors: none;
+        --transition-transform: none;
+    }
+}
+
+@media (min-width: 768px) {
+    :root {
+        --heading-4xl: 96px;
+        --heading-4xl-weight: 700;
+
+        --heading-3xl: 72px;
+        --heading-3xl-weight: 700;
+
+        --heading-2xl: 56px;
+        --heading-2xl-weight: 700;
+
+        --heading-xl: 40px;
+        --heading-xl-weight: 700;
+        --heading-large: 32px;
+        --heading-large-weight: 700;
+
+        --heading-medium: 24px;
+        --heading-medium-weight: 700;
+
+        --heading-small: 20px;
+        --heading-small-weight: 700;
+
+        --heading-xsmall: 18px;
+        --heading-xsmall-weight: 700;
+
+        --body-large: 16px;
+        --body-large-weight: 400;
+
+        --body-medium: 12px;
+        --body-medium-weight: 400;
+
+        --body-small: 10px;
+        --body-small-weight: 400;
+    }
+}
+
+:root {
+    /* Mobile-Optimized Font Sizes */
+
+    --heading-4xl: 48px;
+    --heading-4xl-weight: 700;
+
+    --heading-3xl: 40px;
+    --heading-3xl-weight: 700;
+
+    --heading-2xl: 32px;
+    --heading-2xl-weight: 700;
+
+    --heading-xl: 28px;
+    --heading-xl-weight: 700;
+
+    --heading-large: 24px;
+    --heading-large-weight: 700;
+
+    --heading-medium: 20px;
+    --heading-medium-weight: 700;
+
+    --heading-small: 18px;
+    --heading-small-weight: 700;
+
+    --heading-xsmall: 16px;
+    --heading-xsmall-weight: 700;
+
+    --body-large: 16px;
+    --body-large-weight: 400;
+
+    --body-medium: 12px;
+    --body-medium-weight: 400;
+
+    --body-small: 10px;
+    --body-small-weight: 400;
+
+    --size-000: -.5rem;
+    --size-00: -.25rem;
+    --size-1: .25rem;
+    --size-2: .5rem;
+    --size-3: 1rem;
+    --size-4: 1.25rem;
+    --size-5: 1.5rem;
+    --size-6: 1.75rem;
+    --size-7: 2rem;
+    --size-8: 3rem;
+    --size-9: 4rem;
+    --size-10: 5rem;
+    --size-11: 7.5rem;
+    --size-12: 10rem;
+    --size-13: 15rem;
+    --size-14: 20rem;
+    --size-15: 30rem;
+
+    --container-padding-sm: var(--size-2);
+    --container-padding-md: var(--size-4);
+    --container-padding-lg: var(--size-6);
+    --container-padding-xl: var(--size-8);
+
+    --container-padding-block: var(--size-5);
+    --container-padding-inline: var(--size-3);
+
+    --snappy-bounce-ease: cubic-bezier(0.6, -0.38, 0.37, 1.36);
+
+    /* Primary Color */
+    --clr-primary-hsl: 0 73% 32%;
+    --clr-primary: var(--themeColor);
+    --clr-primary-text: oklch(from var(--clr-primary) calc(l + .99) c h);
+
+    --clr-primary-lighter: oklch(from var(--clr-primary) calc(l + .95) c h);
+    --clr-primary-lighter-text: oklch(from var(--clr-primary-lighter) calc(l - .60) c h);
+
+    --clr-primary-light: oklch(from var(--clr-primary) calc(l +.90) c h);
+    --clr-primary-light-text: oklch(from var(--clr-primary-light) calc(l - .60) c h);
+
+    --clr-primary-dark: oklch(from var(--clr-primary) calc(l - .30) c h);
+    --clr-primary-dark-text: oklch(from var(--clr-primary-dark) calc(l + .60) c h);
+
+    --clr-primary-darker: oklch(from var(--clr-primary) calc(l - .50) c h);
+    --clr-primary-darker-text: oklch(from var(--clr-primary-darker) calc(l + .80) c h);
+
+    /* Secondary Color - Complementary Contrast */
+    --clr-secondary-hsl: 60 50% 40%;
+    --clr-secondary: oklch(from var(--themeColor) l c calc(h - 180));
+    --clr-secondary-text: oklch(from var(--clr-secondary) calc(l + .99) c h);
+
+    --clr-secondary-lighter: oklch(from var(--clr-secondary) calc(l + .95) c h);
+    --clr-secondary-lighter-text: oklch(from var(--clr-secondary-lighter) calc(l - .60) c h);
+
+    --clr-secondary-light: oklch(from var(--clr-secondary) calc(l + .90) c h);
+    --clr-secondary-light-text: oklch(from var(--clr-secondary-light) calc(l - .60) c h);
+
+    --clr-secondary-dark: oklch(from var(--clr-secondary) calc(l - .30) c h);
+    --clr-secondary-dark-text: oklch(from var(--clr-secondary-dark) calc(l + .60) c h);
+
+    --clr-secondary-darker: oklch(from var(--clr-secondary) calc(l - .50) c h);
+    --clr-secondary-darker-text: oklch(from var(--clr-secondary-darker) calc(l + .80) c h);
+
+    /* Tertiary Color - Analogous Harmony */
+    --clr-tertiary-hsl: 30 90% 45%;
+    --clr-tertiary: oklch(from var(--themeColor) l c calc(h + 110));
+    --clr-tertiary-text: oklch(from var(--clr-tertiary) calc(l + .99) c h);
+
+    --clr-tertiary-lighter: oklch(from var(--clr-tertiary) calc(l + .95) c h);
+    --clr-tertiary-lighter-text: oklch(from var(--clr-tertiary-lighter) calc(l - .60) c h);
+
+    --clr-tertiary-light: oklch(from var(--clr-tertiary) calc(l + .90) c h);
+    --clr-tertiary-light-text: oklch(from var(--clr-tertiary-light) calc(l - .60) c h);
+
+    --clr-tertiary-dark: oklch(from var(--clr-tertiary) calc(l - .30) c h);
+    --clr-tertiary-dark-text: oklch(from var(--clr-tertiary-dark) calc(l + .60) c h);
+
+    --clr-tertiary-darker: oklch(from var(--clr-tertiary) calc(l - .50) c h);
+    --clr-tertiary-darker-text: oklch(from var(--clr-tertiary-darker) calc(l + .80) c h);
+
+    /* Neutral Colors - Warm Tints */
+    --clr-neutral-light: hsl(0, 20%, 98%);
+    --clr-neutral: hsl(0, 20%, 95%);
+    --clr-neutral-dark: hsl(0, 20%, 35%);
+    --clr-neutral-darker: hsl(0, 20%, 5%);
+
+    /* Neutral Shades - Warm Tints */
+    --clr-neutral-50: hsl(0, 5%, 100%);
+    --clr-neutral-100: hsl(0, 5%, 98%);
+    --clr-neutral-200: hsl(0, 5%, 95%);
+    --clr-neutral-300: hsl(0, 5%, 90%);
+    --clr-neutral-400: hsl(0, 5%, 80%);
+    --clr-neutral-500: hsl(0, 5%, 70%);
+    --clr-neutral-600: hsl(0, 5%, 50%);
+    --clr-neutral-700: hsl(0, 5%, 35%);
+    --clr-neutral-800: hsl(0, 5%, 25%);
+    --clr-neutral-900: hsl(0, 5%, 5%);
+
+    --clr-section-highlight: var(--clr-primary);
+    --clr-section-highlight-heading: oklch(from var(--clr-section-highlight) calc(l + 0.5) c h);
+    /* --clr-section-highlight-text: oklch(from var(--clr-section-highlight) calc(l + 0.98) c h); */
+    --clr-section-highlight-text: var(--clr-neutral-50);
+
+    /* Base timing values */
+    --duration-slow: 500ms;
+    --duration-medium: 250ms;
+    --duration-fast: 100ms;
+
+    --elastic-duration-slow: 800ms;
+    --elastic-duration-medium: 600ms;
+    --elastic-duration-fast: 400ms;
+
+    /* Micro-interactions (very quick feedback) */
+    --micro-duration-slow: 200ms;
+    --micro-duration-medium: 150ms;
+    --micro-duration-fast: 100ms;
+
+    /* Page transitions (longer, more cinematic) */
+    --page-duration-slow: 1000ms;
+    --page-duration-medium: 700ms;
+    --page-duration-fast: 500ms;
+
+    /* Staggered animations (individual element timing) */
+    --stagger-duration-slow: 800ms;
+    --stagger-duration-medium: 600ms;
+    --stagger-duration-fast: 400ms;
+
+    /* Loading states (can be longer since they're functional) */
+    --loading-duration-slow: 1500ms;
+    --loading-duration-medium: 1000ms;
+    --loading-duration-fast: 800ms;
+
+    /* Complex animations (transforms + opacity + scale) */
+    --complex-duration-slow: 1200ms;
+    --complex-duration-medium: 900ms;
+    --complex-duration-fast: 600ms;
+
+    /* Hover effects (should be snappy) */
+    --hover-duration-slow: 300ms;
+    --hover-duration-medium: 200ms;
+    --hover-duration-fast: 150ms;
+
+    /* Modal/overlay animations */
+    --overlay-duration-slow: 400ms;
+    --overlay-duration-medium: 300ms;
+    --overlay-duration-fast: 200ms;
+
+    /* Scroll-driven animations (can be longer since they're scroll-controlled) */
+    --scroll-duration-slow: 1s;
+    --scroll-duration-medium: 800ms;
+    --scroll-duration-fast: 600ms;
+
+    /* Easing curves */
+    --ease-enter: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-exit: cubic-bezier(0.5, 0, 0.75, 0);
+    --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    --ease-slide-elastic-out: cubic-bezier(0.6, 0.04, 0.98, 0.335);
+    --ease-slide-elastic-in: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+    /* Complete transitions for common use cases */
+    --transition-enter-slow: var(--duration-slow) var(--ease-enter);
+    --transition-enter-medium: var(--duration-medium) var(--ease-enter);
+    --transition-enter-fast: var(--duration-fast) var(--ease-enter);
+
+    --transition-exit-slow: calc(var(--duration-slow) * 1.25) var(--ease-exit);
+    --transition-exit-medium: calc(var(--duration-medium) * 1.25) var(--ease-exit);
+    --transition-exit-fast: calc(var(--duration-fast) * 1.25) var(--ease-exit);
+
+    --transition-enter-elastic-slow: var(--elastic-duration-slow) var(--ease-slide-elastic-in);
+    --transition-enter-elastic-medium: var(--elastic-duration-medium) var(--ease-slide-elastic-in);
+    --transition-enter-elastic-fast: var(--elastic-duration-fast) var(--ease-slide-elastic-in);
+
+    --transition-exit-elastic-slow: calc(var(--elastic-duration-slow) * 1.25) var(--ease-slide-elastic-out);
+    --transition-exit-elastic-medium: calc(var(--elastic-duration-medium) * 1.25) var(--ease-slide-elastic-out);
+    --transition-exit-elastic-fast: calc(var(--elastic-duration-fast) * 1.25) var(--ease-slide-elastic-out);
+
+    /* Micro-interaction transitions */
+    --transition-micro-slow: var(--micro-duration-slow) var(--ease-standard);
+    --transition-micro-medium: var(--micro-duration-medium) var(--ease-standard);
+    --transition-micro-fast: var(--micro-duration-fast) var(--ease-standard);
+
+    /* Page transition presets */
+    --transition-page-enter-slow: var(--page-duration-slow) var(--ease-enter);
+    --transition-page-enter-medium: var(--page-duration-medium) var(--ease-enter);
+    --transition-page-enter-fast: var(--page-duration-fast) var(--ease-enter);
+
+    --transition-page-exit-slow: calc(var(--page-duration-slow) * 1.25) var(--ease-exit);
+    --transition-page-exit-medium: calc(var(--page-duration-medium) * 1.25) var(--ease-exit);
+    --transition-page-exit-fast: calc(var(--page-duration-fast) * 1.25) var(--ease-exit);
+
+    /* Staggered animation presets */
+    --transition-stagger-slow: var(--stagger-duration-slow) var(--ease-enter);
+    --transition-stagger-medium: var(--stagger-duration-medium) var(--ease-enter);
+    --transition-stagger-fast: var(--stagger-duration-fast) var(--ease-enter);
+
+    --transition-stagger-elastic-slow: var(--stagger-duration-slow) var(--ease-slide-elastic-in);
+    --transition-stagger-elastic-medium: var(--stagger-duration-medium) var(--ease-slide-elastic-in);
+    --transition-stagger-elastic-fast: var(--stagger-duration-fast) var(--ease-slide-elastic-in);
+
+    /* Loading state transitions */
+    --transition-loading-slow: var(--loading-duration-slow) var(--ease-standard);
+    --transition-loading-medium: var(--loading-duration-medium) var(--ease-standard);
+    --transition-loading-fast: var(--loading-duration-fast) var(--ease-standard);
+
+    /* Complex animation presets */
+    --transition-complex-slow: var(--complex-duration-slow) var(--ease-enter);
+    --transition-complex-medium: var(--complex-duration-medium) var(--ease-enter);
+    --transition-complex-fast: var(--complex-duration-fast) var(--ease-enter);
+
+    --transition-complex-elastic-slow: var(--complex-duration-slow) var(--ease-slide-elastic-in);
+    --transition-complex-elastic-medium: var(--complex-duration-medium) var(--ease-slide-elastic-in);
+    --transition-complex-elastic-fast: var(--complex-duration-fast) var(--ease-slide-elastic-in);
+
+    /* Hover transitions */
+    --transition-hover-slow: var(--hover-duration-slow) var(--ease-standard);
+    --transition-hover-medium: var(--hover-duration-medium) var(--ease-standard);
+    --transition-hover-fast: var(--hover-duration-fast) var(--ease-standard);
+
+    --transition-hover-bounce-slow: var(--hover-duration-slow) var(--ease-bounce);
+    --transition-hover-bounce-medium: var(--hover-duration-medium) var(--ease-bounce);
+    --transition-hover-bounce-fast: var(--hover-duration-fast) var(--ease-bounce);
+
+    /* Modal/overlay transitions */
+    --transition-overlay-enter-slow: var(--overlay-duration-slow) var(--ease-enter);
+    --transition-overlay-enter-medium: var(--overlay-duration-medium) var(--ease-enter);
+    --transition-overlay-enter-fast: var(--overlay-duration-fast) var(--ease-enter);
+
+    --transition-overlay-exit-slow: calc(var(--overlay-duration-slow) * 1.25) var(--ease-exit);
+    --transition-overlay-exit-medium: calc(var(--overlay-duration-medium) * 1.25) var(--ease-exit);
+    --transition-overlay-exit-fast: calc(var(--overlay-duration-fast) * 1.25) var(--ease-exit);
+
+    /* Scroll-driven animation presets */
+    --transition-scroll-slow: var(--scroll-duration-slow) var(--ease-standard);
+    --transition-scroll-medium: var(--scroll-duration-medium) var(--ease-standard);
+    --transition-scroll-fast: var(--scroll-duration-fast) var(--ease-standard);
+
+    /* Property-specific transitions */
+    --transition-opacity: var(--duration-medium) var(--ease-standard);
+    --transition-transform: var(--duration-medium) var(--ease-enter);
+    --transition-colors: var(--duration-fast) var(--ease-standard);
+    --transition-layout: var(--duration-medium) var(--ease-standard);
+
+    /* Hover and interaction states */
+    --transition-hover: var(--duration-fast) var(--ease-standard);
+    --transition-focus: var(--duration-fast) var(--ease-standard);
+
+    /* Subtle elevation shadows */
+    --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+    /* Soft inset shadows */
+    --shadow-inset-sm: inset 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-inset-md: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+}
+
+@media(max-width: 768px) {
+    :root {
+        --content-max-width: 90vw;
+
+    }
+}
+
+@media (min-width: 768px) {
+    :root {
+        --container-padding-block: var(--size-7);
+        --container-padding-inline: var(--size-4);
+        --content-max-width: 1200px;
+
+    }
+}
+
+@media (min-width: 1024px) {
+    :root {
+        --container-padding-block: var(--size-8);
+        --container-padding-inline: var(--size-5);
+    }
+}

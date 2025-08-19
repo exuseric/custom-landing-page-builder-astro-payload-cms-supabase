@@ -1,0 +1,112 @@
+---
+import type { SlideshowHero } from "@utils/payload/types";
+import { Image } from "astro:assets";
+import { DATABASE_URL } from "astro:env/server";
+
+interface Props extends SlideshowHero {}
+
+import Container from "@components/Container.astro";
+import s from "./style.module.css";
+
+import CustomImage from "@components/CustomImage.astro";
+const props = Astro.props;
+
+console.log(props);
+---
+
+<header class={s["slideshow_hero"]}>
+    <div class={s["slideshow_hero__slideshow"]} data-slideshow>
+        {
+            props?.slides?.map((slide, index) => (
+                // <CustomImage
+                //     id={s["hero__image"]}
+                //     image={slide.cover}
+                //     isSlide={true}
+                //     slideActive={index === 0 ? "true" : "false"}
+                //     slideOut="false"
+                //     classlist={[]}
+                //     size="large"
+                //     eager={true}
+                // />
+                <Image
+                    id={s["hero__image"]}
+                    src={`${DATABASE_URL}${slide.cover?.url}`}
+                    alt={slide.cover.alt || ""}
+                    title={slide.cover.alt}
+                    width={(slide.cover.width as number) || 1000}
+                    height={(slide.cover.height as number) || 1000}
+                    class={s["slideshow_hero__slide"]}
+                    loading={index === 0 ? "eager" : "lazy"}
+                    decoding={index === 0 ? "sync" : "async"}
+                    priority={index === 0 ? true : false}
+                    data-slide
+                    data-slide-active={index === 0 ? "true" : "false"}
+                    data-sliding-out="false"
+                    />
+            ))
+        }
+    </div>
+    <div class={s["slideshow_hero__overlay"]}></div>
+    <div class={s["hero__container"]}>
+        <Container>
+            <div class={s["slideshow_hero__wrapper"]}>
+                <article class={s["slideshow_hero__content"]}>
+                    <h1>{props.heading}</h1>
+                    <p>{props.excerpt}</p>
+                    <a
+                        href="#contact"
+                        class="btn btn-md btn-primary"
+                        style="margin-top: 0.825rem;">Let's Talk</a
+                    >
+                </article>
+            </div>
+        </Container>
+    </div>
+</header>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const slides = document.querySelectorAll("[data-slide]");
+        let currentSlide = 0;
+        let isAnimating = false;
+
+        function nextSlide() {
+            if (isAnimating) return;
+
+            isAnimating = true;
+            const currentSlideElement = slides[currentSlide];
+            const nextSlideIndex = (currentSlide + 1) % slides.length;
+            const nextSlideElement = slides[nextSlideIndex];
+
+            // Set data-active attributes
+            nextSlideElement.setAttribute("data-slide-active", "true");
+            nextSlideElement.setAttribute("data-sliding-out", "false");
+
+            setTimeout(() => {
+                currentSlideElement.setAttribute("data-slide-active", "false");
+                currentSlideElement.setAttribute("data-sliding-out", "true");
+            }, 150);
+
+            currentSlide = nextSlideIndex;
+
+            setTimeout(() => {
+                slides.forEach((slide) => {
+                    if (slide.getAttribute("data-slide-active") !== "true") {
+                        slide.setAttribute("data-sliding-out", "false");
+                    }
+                });
+                isAnimating = false;
+            }, 800);
+        }
+
+        // Auto-advance slides every 5 seconds
+        let intervalId: any = setInterval(nextSlide, 5000);
+
+        // Pause on hover
+        const slideshow = document.querySelector("[data-slideshow]") as HTMLDivElement;
+        slideshow.addEventListener("mouseenter", () => clearInterval(intervalId));
+        slideshow.addEventListener("mouseleave", () => {
+            intervalId = setInterval(nextSlide, 5000);
+        });
+    });
+</script>

@@ -1,0 +1,31 @@
+---
+import type { HeroBlock } from "@utils/payload/types";
+interface Props extends HeroBlock {}
+
+import Container from "@components/Container.astro";
+import s from "./style.module.css";
+import CustomImage from "@components/CustomImage.astro";
+const props = Astro.props;
+---
+
+<header class={s["split-hero"]}>
+    <Container>
+        <div class={s["split-hero__wrapper"]}>
+            <article class={s["split-hero__content"]} data-animate="fade-slide-load" data-animate-children-only="true">
+                <h1 class={s["split-hero__title"]}>{props.heading}</h1>
+                <p>{props.excerpt}</p>
+                <a
+                    href="#contact"
+                    class="btn btn--primary"
+                    style="margin-top: 0.825rem;">Get in Touch</a>
+            </article>
+            <CustomImage
+                eager={true}
+                image={props.cover}
+                size="large"
+                classlist={s["split-hero__image"]}
+                data-animate="blur-load"
+            />
+        </div>
+    </Container>
+</header>

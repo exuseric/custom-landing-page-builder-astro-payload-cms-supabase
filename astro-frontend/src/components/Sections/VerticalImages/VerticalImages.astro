@@ -1,0 +1,51 @@
+---
+interface Props {
+    data: {
+        title: string,
+        content: string,
+        expand: {
+            image: []
+        }
+    },
+    core_values?: string
+}
+import "./section.css";
+import { Icon } from "astro-iconify";
+import CustomImage from "@components/CustomImage.astro";
+const { data, core_values } = Astro.props;
+---
+
+<div class="col-grid-12">
+    <div class="vertical-section__wrapper">
+        <div class="vertical-section__images">
+            {data.expand.image.map((image: any, idx: number) => (
+                    <CustomImage
+                        image={image}
+                        classlist={`vertical-section__image vertical-section__image_${idx}`}
+                        size="small"
+                        eager={false}
+                    />
+            ))}
+        </div>
+        <div class="vertical-section__content">
+            {
+                core_values && (
+                    <ul class="vertical-section__core_values">
+                        {core_values.split(",").map((value: any) => (
+                            <li>
+                                <Icon
+                                    name="mdi:check-bold"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                />
+                                {value.trim()}
+                            </li>
+                        ))}
+                    </ul>
+                )
+            }
+            <h2>{data.title}</h2>
+            <slot set:html={data.content} />
+        </div>
+    </div>
+</div>

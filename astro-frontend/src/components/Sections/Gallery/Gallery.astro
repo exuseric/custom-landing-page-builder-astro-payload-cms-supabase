@@ -1,0 +1,31 @@
+---
+import { LightGallery } from "astro-lightgallery";
+import { DATABASE_URL } from "astro:env/server";
+import s from "./style.module.css";
+
+const props = Astro.props;
+---
+
+<LightGallery
+    layout={{
+        imgs: props.images.map((image: any) => ({
+            src: `${DATABASE_URL}${image?.url}`,
+            thumb: `${DATABASE_URL}${image?.url}`,
+            alt: image.alt || "",
+            width: image.width || 1000,
+            height: image.height || 666,
+            title: image.alt || "",
+        })),
+        adaptive: {
+            zoom: 200,
+        }
+    }}
+    options={{
+        animateThumb: false,
+        zoomFromOrigin: false,
+        allowMediaOverlap: true,
+        toggleThumb: true,
+        zoom: true
+    }}
+    class:list={[s["gallery"], "page-section"]}
+/>

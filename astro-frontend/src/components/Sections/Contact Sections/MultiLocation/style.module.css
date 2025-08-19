@@ -1,0 +1,109 @@
+.two_location__tab {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    margin-top: var(--size-8);
+}
+
+.two_location__tab-controls {
+    display: flex;
+    flex-flow: row wrap;
+    gap: var(--size-2);
+}
+
+.two_location__tab-control[data-is-active="true"],
+.two_location__tab-item[data-is-active="true"] {
+    background-color: var(--clr-primary-lighter);
+    color: oklch(from var(--clr-primary-lighter) calc(l - .70) c h);
+}
+
+.two_location__tab-item[data-is-active="true"] {
+    display: flex;
+}
+
+.two_location__tab-item[data-is-active="false"] {
+    display: none;
+}
+
+.two_location__tab-item {
+    display: flex;
+    flex-flow: column;
+    gap: var(--size-4);
+    padding: var(--size-4);
+}
+
+.two_location__tab-item iframe {
+    min-height: 24rem;
+}
+
+.two_location__working-hours {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    align-items: center;
+    gap: var(--size-2);
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+}
+
+@keyframes fade-out {
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes slide-from-right {
+    from {
+        transform: translateX(30px);
+    }
+}
+
+@keyframes slide-to-left {
+    to {
+        transform: translateX(-30px);
+    }
+}
+
+@keyframes slide-in-blurred-top {
+    0% {
+        transform: translateY(-1000px) scaleY(2.5) scaleX(0.2);
+        transform-origin: 50% 0%;
+        filter: blur(40px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0) scaleY(1) scaleX(1);
+        transform-origin: 50% 50%;
+        filter: blur(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slide-out-blurred-top {
+    0% {
+        transform: translateY(0) scaleY(1) scaleX(1);
+        transform-origin: 50% 0%;
+        filter: blur(0);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-1000px) scaleY(2) scaleX(0.2);
+        transform-origin: 50% 0%;
+        filter: blur(40px);
+        opacity: 0;
+    }
+}
+
+/* html::view-transition-group(.two_location__tab-item) {
+    animation: slide-out-blurred-top var(--transition-exit-elastic-medium) both;
+    mix-blend-mode: none;
+} */
+/* 
+html::view-transition-new(.two_location__tab-item) {
+    animation: slide-in-blurred-top var(--transition-enter-elastic-slow) both;
+} */

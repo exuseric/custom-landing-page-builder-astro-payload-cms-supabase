@@ -1,0 +1,120 @@
+---
+import s from "./style.module.css";
+
+import type { LocationType } from "@utils/types";
+import InfoCard from "@components/Cards/Info/InfoCard.astro";
+import Container from "@components/Container.astro";
+// import { Icon } from "astro-iconify";
+const props = Astro.props;
+---
+
+<section class:list={[s["two_location"], "page-section"]} id={s["contact"]} data-highlight="true" aria-labelledby={props.id}>
+    <Container>
+        <div class={s["two_location__content"]}>
+            <article>
+                <h2 id={props.id}>{props.title}</h2>
+                <InfoCard cards={props.info} />
+            </article>
+        </div>
+
+        <div class={s["two_location__tab"]}>
+            <div class={s["two_location__tab-controls"]}>
+                {
+                    props.location_info.map(
+                        (location: LocationType, idx: number) => (
+                            <button
+                                class={s["two_location__tab-control"]}
+                                data-is-active={`${idx === 0 ? "true" : "false"}`}
+                                data-id={location.id}
+                                data-tab-controls={location.id}
+                            >
+                                {location.title}
+                            </button>
+                        ),
+                    )
+                }
+            </div>
+
+            <div class={s["two_location__tab-items"]}>
+                {
+                    props.location_info.map(
+                        (location: LocationType, idx: number) => (
+                            <div
+                                class={s["two_location__tab-item"]}
+                                data-is-active={`${idx === 0 ? "true" : "false"}`}
+                                data-tab-item={location.id}
+                            >
+                                <article>
+                                    <slot set:html={location.address_details} />
+                                </article>
+                                <div class={s["two_location__working-hours"]}>
+                                    <Icon
+                                        name="mdi:clock"
+                                        aria-hidden="true"
+                                        focusable="false"
+                                    />
+                                    <slot set:html={location.operating_hours} />
+                                </div>
+                                <slot set:html={location.iframe} />
+                            </div>
+                        ),
+                    )
+                }
+            </div>
+        </div>
+    </Container>
+</section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const tabControls = document.querySelectorAll(
+            "[data-tab-controls]",
+        ) as NodeListOf<HTMLButtonElement>;
+        const tabItems = document.querySelectorAll(
+            "[data-tab-item]",
+        ) as NodeListOf<HTMLDivElement>;
+
+        const updateActiveTabItem = (activeTabItem: string) => {
+            tabItems.forEach((tabItem: HTMLDivElement) => {
+                if (tabItem.dataset.tabItem === activeTabItem) {
+                    tabItem.dataset.isActive = "true";
+                } else {
+                    tabItem.dataset.isActive = "false";
+                }
+            });
+        };
+
+        const updateActiveTab = (activeTabControl: HTMLButtonElement) => {
+            tabControls.forEach((tabControl: HTMLButtonElement) => {
+                if (tabControl.dataset.id === activeTabControl.dataset.id) {
+                    tabControl.dataset.isActive = "true";
+                } else {
+                    tabControl.dataset.isActive = "false";
+                }
+            });
+        };
+
+        tabItems.forEach((item: HTMLDivElement) => {
+            item.style.viewTransitionName = `tab-item-${item.dataset.tabItem}`
+        })
+
+        tabControls.forEach((tabControl) => {
+            tabControl.addEventListener("click", (e) => {
+                const control = e.target as HTMLButtonElement
+                const activeItem = document.querySelector(`[data-tab-item="${control.dataset.tabControls}"]`) as HTMLDivElement;
+
+                if(!document.startViewTransition) {
+                    updateActiveTab(control);
+                    updateActiveTabItem(control.dataset.tabControls as string);
+                    return;
+                }
+
+                document.startViewTransition(() => {
+                    updateActiveTab(control);
+                    activeItem.scrollIntoView({ behavior: "smooth" });
+                    updateActiveTabItem(control.dataset.tabControls as string);
+                });
+            });
+        });
+    });
+</script>

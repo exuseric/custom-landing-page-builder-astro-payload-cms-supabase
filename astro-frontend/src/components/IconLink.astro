@@ -1,0 +1,28 @@
+---
+interface Props {
+    type: string;
+    text: string;
+    href: string;
+}
+import { Icon } from "astro-iconify";
+const props = Astro.props;
+
+const url: Record<string, string> = {
+    mobile: "tel:",
+    telephone: "tel:",
+    whatsapp: "https://wa.me/",
+    email: "mailto:",
+};
+
+const icons: Record<string, `mdi:${string}` | `ri:${string}`> = {
+    mobile: "mdi:cellphone",
+    telephone: "mdi:phone",
+    whatsapp: "ri:whatsapp-fill",
+    email: "mdi:email",
+};
+---
+
+<a href={`${url[props.type]}${props.href}`} data-icon-link>
+    <Icon name={icons[props.type]} aria-hidden="true" focusable="false" />
+    <span>{props.text}</span>
+</a>

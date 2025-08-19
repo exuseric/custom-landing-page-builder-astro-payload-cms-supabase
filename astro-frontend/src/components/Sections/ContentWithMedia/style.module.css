@@ -1,0 +1,110 @@
+.content-with-media__content_wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--size-4);
+}
+
+.content-with-media__header h2 {
+    font-size: var(--heading-xl);
+}
+
+.content-with-media__content ul,
+.content-with-media__content ol {
+    margin-left: var(--size-4);
+}
+
+.content-with-media__article {
+    display: flex;
+    flex-direction: column;
+    gap: var(--size-3);
+}
+
+.content-with-media__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--size-2);
+}
+
+.content-with-media__content>* {
+    line-height: 1.5;
+}
+
+.content-with-media__image_wrapper {
+    width: 100%;
+    height: 100%;
+
+    /* max-height: max-content; */
+}
+
+.content-with-media__image {
+    max-height: 400px;
+    width: 100%;
+    height: 100%;
+}
+
+/* Tablet and up */
+@media (min-width: 769px) {
+    .content-with-media__content_wrapper {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: auto;
+        align-items: center;
+        gap: var(--size-8);
+    }
+
+    .content-with-media__content_wrapper>* {
+        grid-row: 1 / -1;
+    }
+
+    .content-with-media__content_wrapper[data-position="right"] .content-with-media__article {
+        grid-column: 1 / 2;
+    }
+
+    .content-with-media__content_wrapper[data-position="right"] .content-with-media__image_wrapper {
+        grid-column: 2 / -1;
+    }
+
+    .content-with-media__content_wrapper[data-position="left"] .content-with-media__image_wrapper {
+        grid-column: 1 / 2;
+    }
+
+    .content-with-media__content_wrapper[data-position="left"] .content-with-media__article {
+        grid-column: 2 / -1;
+    }
+
+    .content-with-media__content_wrapper[data-position="top"] {
+        display: grid;
+        grid-template-columns: 3vw 1fr 3vw;
+        grid-template-rows: 3vw max-content 3vw;
+        height: auto;
+    }
+
+    .content-with-media__content_wrapper[data-position="top"] .content-with-media__image_wrapper {
+        grid-column: 1 / -1;
+        grid-row: 1 / -1;
+
+        width: 100%;
+        height: 100%;
+        
+    }
+    
+    .content-with-media__image {
+        width: 100%;
+        max-width: 100%;
+        max-height: 100%;
+    }
+    
+    .content-with-media__content_wrapper[data-position="top"] .content-with-media__article {
+        grid-column: 2 / -2;
+        grid-row: 2 / -2;
+        
+        z-index: 2;
+        width: 100%;
+        height: 100%;
+        max-height: max-content;
+
+        padding: var(--size-8);
+
+        background-color: oklch(from var(--clr-primary-lighter) l c h / .85);
+    }
+}

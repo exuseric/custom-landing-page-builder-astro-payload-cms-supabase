@@ -1,0 +1,23 @@
+---
+import Alternating from "./Alternating/Alternating.astro";
+import Basic from "./Basic/Basic.astro";
+import InfoCard from "./Info/InfoCard.astro";
+import ContentCard from "./ContentCard/ContentCard.astro";
+import IconCard from "./IconCard/IconCard.astro";
+import ShortGallery from "./ShortGallery/ShortGallery.astro";
+
+const { card_type, cards, isGallery, direction } = Astro.props;
+
+const cardProps = {
+    cards,
+    isGallery,
+    direction
+}
+---
+
+{card_type === "basic" && <Basic {...cardProps} />}
+{card_type === "info" && <InfoCard {...cardProps} />}
+{card_type === "alternating" && <Alternating {...cardProps} />}
+{card_type === "gallery" && <ShortGallery {...cardProps} /> }
+{card_type === "content" && <ContentCard {...cardProps} />}
+{card_type === "icon card" && <IconCard {...cardProps} />}

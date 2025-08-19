@@ -1,0 +1,32 @@
+---
+import type {BasicCard} from '@utils/payload/types'
+import { extractLexicalText } from '@utils/payload/helpers';
+
+import s from "./style.module.css";
+import CustomImage from "@components/CustomImage.astro";
+const { cards } = Astro.props;
+---
+
+<div class={s["alternating-card-grid"]}>
+    {
+        cards.map((card: BasicCard) => (
+            <div class={s["alternating-card"]} data-has-background>
+                <div class={s["alternating-card__image-wrapper"]}>
+                    {card.image && (
+                        <CustomImage
+                            eager={false}
+                            image={card.image}
+                            size="medium"
+                            classlist={s["alternating-card__image"]}
+                        />
+                    )}
+                </div>
+                <article>
+                    <h3>{card.title}</h3>
+                    {/* <slot set:html={extractLexicalText(card.body)} /> */}
+                    <slot set:html={card.body_html} />
+                </article>
+            </div>
+        ))
+    }
+</div>

@@ -1,0 +1,53 @@
+---
+import type { HeroProps } from "@utils/types";
+import Container from "@components/Container.astro";
+interface Props extends HeroProps {}
+import s from "./style.module.css";
+import CustomImage from "@components/CustomImage.astro";
+const { title, image, cover, excerpt } = Astro.props;
+---
+
+<div>
+    <Container>
+        <header class={s["wavy_hero"]}>
+            <div class={s["wavy_hero__cover_wrapper"]}>
+                {
+                    cover && (
+                        <CustomImage
+                            image={cover}
+                            classlist={s["wavy_hero__cover_image"]}
+                            size="large"
+                            eager={true}
+                        />
+                    )
+                }
+            </div>
+            <div class={s["wavy_hero__content_wrapper"]}>
+                <h1 class={s["wavy_hero__content_title"]}>{title}</h1>
+                <p class={s["wavy_hero__content_excerpt"]}>{excerpt}</p>
+                <div class={s["wavy_hero__btn_wrapper"]}>
+                    <a
+                        href="#contact"
+                        class:list={[s["wavy_hero__cta"], "btn btn--primary"]}
+                    >
+                        Let's Work Together
+                    </a>
+                    <a
+                        href="#product"
+                        class:list={[s["wavy_hero__cta"], "btn btn--outline"]}
+                    >
+                        Explore what we offer
+                    </a>
+                </div>
+            </div>
+            <div class={s["wavy_hero__image_wrapper"]}>
+                <CustomImage
+                    image={image}
+                    classlist={s["wavy_hero__image"]}
+                    size="large"
+                    eager={true}
+                />
+            </div>
+        </header>
+    </Container>
+</div>

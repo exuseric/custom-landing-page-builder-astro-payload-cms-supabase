@@ -1,0 +1,21 @@
+---
+import Container from "@components/Container.astro";
+import "./services.css";
+import Cards from "@components/Cards/Cards.astro";
+
+const { page } = Astro.props;
+---
+
+<div id="services" class="container services">
+    <Container>
+        <h2 class="services__title">{page.title}</h2>
+        <p>{page.excerpt}</p>
+        <div class="services__grid">
+            <Cards
+                card_type={page.card_grid_type}
+                cards={page.expand.card_grid}
+                data={page}
+            />
+        </div>
+    </Container>
+</div>

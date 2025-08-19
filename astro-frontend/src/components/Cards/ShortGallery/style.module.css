@@ -1,0 +1,131 @@
+/* Gallery section */
+.gallery-section {
+    margin: 3rem 0;
+}
+
+.gallery-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.gallery-title {
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+/* Gallery grid */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1.5rem;
+}
+
+/* Responsive grid adjustments */
+@media (min-width: 576px) {
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 768px) {
+    .gallery-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 992px) {
+    .gallery-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Gallery item */
+.gallery-item {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1/1;
+    overflow: hidden;
+}
+
+.gallery-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover .gallery-image {
+    transform: scale(1.05);
+}
+
+.gallery-item:focus-within {
+    outline: 2px solid #0066cc;
+}
+
+.gallery-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 1rem;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover .gallery-caption,
+.gallery-item:focus-within .gallery-caption {
+    transform: translateY(0);
+}
+
+/* View more button */
+.view-more-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.view-more-btn {
+    background-color: transparent;
+    border: 1px solid #333;
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.view-more-btn:hover,
+.view-more-btn:focus {
+    background-color: #333;
+    color: #fff;
+}
+
+.view-more-btn:focus {
+    outline: none;
+}
+
+/* Hidden rows */
+.gallery-row {
+    margin-bottom: 1.5rem;
+}
+
+.gallery-row:not(:first-child) {
+    display: none;
+}
+
+/* Accessibility class for screen reader announcements */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}

@@ -1,0 +1,384 @@
+---
+import Container from "@components/Container.astro";
+import { Icon } from "astro-iconify";
+import "./testimonial.css";
+
+// Dummy testimonial data for now
+const testimonials = [
+  {
+    id: "1",
+    quote:
+      "For the first time in a long time our team is truly collaborating, and everyone is moving in the same direction, with the same goals. It's truly remarkable how quickly things have changed in just a week.",
+    author: "Ryan Sullivan",
+    company: "WP Site Care",
+  },
+  {
+    id: "2",
+    quote:
+      "This is the first time that the people in the organization are actually using project management app. And not looking at it as if it was a nuisance. It's a tool, and a good one.",
+    author: "Evgeny Viner",
+    company: "Leadux GmbH",
+  },
+  {
+    id: "3",
+    quote:
+      "We've cut our meeting time in half and doubled our productivity since switching. The interface is so intuitive that even our least tech-savvy team members picked it up immediately.",
+    author: "Sarah Johnson",
+    company: "Bright Ideas Studio",
+  },
+  {
+    id: "4",
+    quote:
+      "Finally found a solution that works for both our design and development teams. The seamless integration between departments has been a game changer for our workflow.",
+    author: "Miguel Rodriguez",
+    company: "Fusion Digital",
+  },
+  {
+    id: "5",
+    quote:
+      "The customer support is exceptional. Every question we've had has been answered within hours, not days. That level of service is rare these days.",
+    author: "Amara Wilson",
+    company: "Global Reach Partners",
+  },
+  {
+    id: "6",
+    quote:
+      "Switching platforms was a big decision for us, but the migration was surprisingly smooth. Now we're wondering why we didn't do it sooner.",
+    author: "Theo Nakamura",
+    company: "Apex Solutions",
+  },
+];
+
+// Group testimonials in sets of 3
+const testimonialGroups = [];
+for (let i = 0; i < testimonials.length; i += 3) {
+  testimonialGroups.push(testimonials.slice(i, i + 3));
+}
+
+// Props for customization
+interface Props {
+  title?: string;
+  subtitle?: string;
+  ctaText?: string;
+  ctaLink?: string;
+  highlightBackground?: boolean;
+}
+
+const {
+  title = "Change for the better.",
+  subtitle = "We asked our customers what changed for the better since they switched to our product. Here's just some of what they said:",
+  ctaText = "Try it for free, enjoy work more",
+  ctaLink = "#",
+  data,
+} = Astro.props;
+---
+
+<section class="content_section testimonial_section" data-highlight={data?.highlight} data-offscreen>
+  <Container>
+    <article class="testimonial_header content_section__article">
+      <header class="content_section__header">
+        <h2>{title}</h2>
+      </header>
+      <div class="content_section__content">
+        <p>{subtitle}</p>
+      </div>
+    </article>
+
+    <div class="testimonial_carousel">
+      <section class="testimonial_carousel__controls">
+        <button
+          class="btn btn---icon testimonial_carousel__control testimonial_carousel__control--prev-btn"
+          aria-label="Previous testimonial"
+          data-action="testimonial-action-btn"
+          data-action-type="previous"
+        >
+          <Icon name="mdi:chevron-left" aria-hidden="true" focusable="false" />
+        </button>
+        <button
+          class="btn btn---icon testimonial_carousel__control testimonial_carousel__control--next-btn"
+          aria-label="Next testimonial"
+          data-action="testimonial-action-btn"
+          data-action-type="next"
+        >
+          <Icon name="mdi:chevron-right" aria-hidden="true" focusable="false" />
+        </button>
+      </section>
+
+      <div class="testimonial_carousel__viewport">
+        <div class="testimonial_carousel__track" id="testimonialTrack" data-testimonial-track>
+          {
+            testimonials.map((testimony, index) => (
+              <blockquote class="testimonial_card" data-has-background="true" data-testimonial-card data-index={index}>
+                <slot
+                  class="testimonial_card__quote"
+                  set:html={testimony.quote}
+                />
+                <cite>
+                  <address class="testimonial_card__author">
+                    — {testimony.author}
+                  </address>
+                </cite>
+              </blockquote>
+            ))
+          }
+          <!-- {testimonialGroups.map((group, groupIndex) => (
+              <div class="testimonial-group" data-group-index={groupIndex}>
+                {group.map(testimonial => (
+                  <div class="testimonial-card" data-has-background="true">
+                    <blockquote>
+                      <p set:html={testimonial.quote}></p>
+                      <footer>
+                        <cite>
+                          <span class="author">{testimonial.author}</span>
+                        </cite>
+                      </footer>
+                    </blockquote>
+                  </div>
+                ))}
+              </div>
+            ))} -->
+        </div>
+      </div>
+    </div>
+  </Container>
+</section>
+<script src="@utils/testimonial.ts"></script>
+<style>
+  /* .testimonial-section {
+    padding-block: var(--container-padding-block);
+    width: 100%;
+  }
+
+  .testimonial-header {
+    text-align: left;
+    margin-bottom: var(--size-7);
+  }
+
+  .testimonial-header h2 {
+    font-size: var(--heading-xl);
+    font-weight: var(--heading-xl-weight);
+    margin-bottom: var(--size-3);
+  }
+
+  .testimonial-header p {
+    font-size: var(--body-large);
+    max-width: 65ch;
+  }
+
+  .testimonial-carousel {
+    position: relative;
+    width: 100%;
+    margin-bottom: var(--size-7);
+  }
+  
+  .carousel-viewport {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .testimonial-track {
+    display: flex;
+    width: 100%;
+    transition: transform 0.5s var(--snappy-bounce-ease);
+  }
+
+  .testimonial-group {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--size-4);
+    width: 100%;
+    flex: 0 0 100%;
+  }
+
+  .testimonial-card {
+    padding: var(--size-5);
+    border-radius: var(--size-2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    background-color: var(--clr-neutral-50);
+  }
+
+  .testimonial-card blockquote {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--size-4);
+    height: 100%;
+
+    margin: 0;
+  }
+
+  .testimonial-card p {
+    font-size: var(--body-large);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .testimonial-card p :global(strong) {
+    color: var(--clr-primary);
+  }
+
+  .testimonial-card footer {
+    padding-top: var(--size-3);
+    border-top: 1px solid var(--clr-neutral-300);
+  }
+
+  .testimonial-card cite {
+    font-style: normal;
+    display: block;
+  }
+
+  .testimonial-card .author {
+    font-weight: var(--heading-small-weight);
+    font-size: var(--heading-xsmall);
+    display: block;
+  }
+
+  .testimonial-card .company {
+    font-size: var(--body-medium);
+    color: var(--clr-neutral-600);
+    display: block;
+  }
+
+  .carousel-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--size-3);
+    margin-bottom: var(--size-4);
+    width: max-content;
+  }
+
+  .carousel-control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: var(--clr-neutral-100);
+    border: 1px solid var(--clr-neutral-300);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+  }
+
+  .carousel-control:hover {
+    background-color: var(--clr-primary-lighter);
+    border-color: var(--clr-primary);
+  }
+
+  .carousel-control svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .carousel-dots {
+    display: flex;
+    gap: var(--size-2);
+    justify-content: center;
+  }
+
+  .carousel-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--clr-neutral-300);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .carousel-dot[data-active="true"] {
+    background-color: var(--clr-primary);
+    transform: scale(1.25);
+  }
+
+  .testimonial-footer {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--size-4);
+    align-items: center;
+  }
+
+  .more-link {
+    color: var(--clr-primary-dark);
+    text-decoration: underline;
+    font-weight: 500;
+  }
+
+  @media (min-width: 768px) {
+    .testimonial-group {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .testimonial-footer {
+      grid-template-columns: 1fr auto;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .testimonial-group {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  } */
+</style>
+
+<script>
+  // // Client-side JavaScript for carousel functionality
+  // document.addEventListener("DOMContentLoaded", () => {
+  //   const track = document.getElementById("testimonialTrack");
+  //   const groups = document.querySelectorAll(".testimonial-group");
+  //   const nextBtn = document.querySelector(".next-btn");
+  //   const prevBtn = document.querySelector(".prev-btn");
+  //   const dots = document.querySelectorAll(".carousel-dot");
+
+  //   let currentGroupIndex = 0;
+  //   const totalGroups = groups.length;
+
+  //   // Set initial state
+  //   updateCarousel();
+
+  //   // Handle next button click
+  //   nextBtn?.addEventListener("click", () => {
+  //     currentGroupIndex = (currentGroupIndex + 1) % totalGroups;
+  //     updateCarousel();
+  //   });
+
+  //   // Handle previous button click
+  //   prevBtn?.addEventListener("click", () => {
+  //     currentGroupIndex = (currentGroupIndex - 1 + totalGroups) % totalGroups;
+  //     updateCarousel();
+  //   });
+
+  //   // Handle dot clicks
+  //   dots.forEach((dot, index) => {
+  //     dot.addEventListener("click", () => {
+  //       currentGroupIndex = index;
+  //       updateCarousel();
+  //     });
+  //   });
+
+  //   // Update carousel position and active indicators
+  //   function updateCarousel() {
+  //     // Move the track
+  //     if (track) {
+  //       track.style.transform = `translateX(-${currentGroupIndex * 100}%)`;
+  //     }
+
+  //     // Update active dot
+  //     dots.forEach((dot, index) => {
+  //       if (index === currentGroupIndex) {
+  //         dot.setAttribute("data-active", "true");
+  //       } else {
+  //         dot.setAttribute("data-active", "false");
+  //       }
+  //     });
+  //   }
+
+  //   // Set the first dot as active initially
+  //   if (dots.length > 0) {
+  //     dots[0].setAttribute("data-active", "true");
+  //   }
+  // });
+</script>

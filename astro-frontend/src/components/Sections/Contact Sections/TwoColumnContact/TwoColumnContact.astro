@@ -1,0 +1,52 @@
+---
+import s from "./style.module.css";
+import Container from "@components/Container.astro";
+import { extractLexicalText } from "@utils/payload/helpers";
+import IconLink from "@components/IconLink.astro";
+
+const props = Astro.props;
+---
+
+<section class:list={[s["two_column_contact"], "page-section"]} id="contact" data-highlight="true" aria-labelledby={props.id}>
+    <Container>
+        <header class={s["content_section__header"]}>
+            <h2 id={props.id}>{props.title}</h2>
+        </header>
+        <div class={s["two_column_contact__content"]}>
+            <div class={s["two_column_contact__body"]}>
+                <adrress>
+                    <slot
+                        set:html={props.location.address_html}
+                    />
+                </adrress>
+                <div class={s["two_column_contact__phone"]}>
+                    {
+                        props.contact.phone.map((phone: any) => (
+                            <IconLink
+                                href={phone.number}
+                                type={phone.type}
+                                text={phone.number}
+                            />
+                        ))
+                    }
+                </div>
+
+                <div class={s["two_column_contact__email"]}>
+                    {
+                        props.contact.email.map((email: any) => (
+                            <IconLink
+                                href={email.email}
+                                type="email"
+                                text={email.email}
+                            />
+                        ))
+                    }
+                </div>
+            </div>
+
+            <div class={s["two_column_contact__location"]}>
+                <slot set:html={props.location.iframe} />
+            </div>
+        </div>
+    </Container>
+</section>

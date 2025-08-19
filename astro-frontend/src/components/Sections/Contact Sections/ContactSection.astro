@@ -1,0 +1,12 @@
+---
+import DefaultContact from "./DefaultContact/DefaultContact.astro"
+import TwoColumnContact from "./TwoColumnContact/TwoColumnContact.astro"
+import MultiLocation from "./MultiLocation/MultiLocation.astro"
+import OverlapContact from "./OverlapContact/OverlapContact.astro"
+
+const props = Astro.props
+---
+{props.direction === "horizontal" && <TwoColumnContact {...props} />}
+{props.direction === "vertical" && <DefaultContact {...props} />}
+{props.style === "multi location" && <MultiLocation {...props} />}
+{props.direction === "overlap" && <OverlapContact {...props} />}

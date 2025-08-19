@@ -1,0 +1,33 @@
+---
+import s from "./style.module.css";
+import type { ContentWithGridBlock } from "@utils/payload/types";
+interface Props extends ContentWithGridBlock {}
+import Container from "@components/Container.astro";
+import Basic from "@components/Cards/Basic/Basic.astro"
+import CustomImage from "@components/CustomImage.astro";
+import { extractLexicalText } from "@utils/payload/helpers";
+import Alternating from "@components/Cards/Alternating/Alternating.astro";
+import AlternatingBasic from "@components/Cards/AlternatingBasic/AlternatingBasic.astro";
+const props = Astro.props;
+---
+
+<section
+    class:list={[s["content-with-grid"], "page-section"]}
+    data-highlight={props.highlight}
+    id={props["anchor id"]?.split(" ").join("-")}
+    data-offscreen
+    aria-labelledby={props.id}
+>
+    <Container>
+        <header class:list={[s["content-with-grid__header"], "page-section__header"]}>
+            <h2 id={props.id}>{props.title}</h2>
+            <slot set:html={props.body_html} />
+        </header>
+
+        <div class={s["content-with-grid__grid-wrapper"]}>
+            {props['card type'] === 'basic' && <Basic cards={props['card grid']}/>}
+            {props['card type'] === 'alternating basic' && (<AlternatingBasic cards={props['card grid']} />)}
+            {props['card type'] === 'alternating' && (<Alternating cards={props['card grid']} />)}
+        </div>
+    </Container>
+</section>

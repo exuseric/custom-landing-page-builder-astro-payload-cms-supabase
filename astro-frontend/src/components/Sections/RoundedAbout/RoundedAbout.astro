@@ -1,0 +1,39 @@
+---
+import type { RoundedAbout } from "@utils/payload/types";
+interface Props extends RoundedAbout {}
+import Container from "@components/Container.astro";
+import s from "./style.module.css";
+import CustomImage from "@components/CustomImage.astro";
+const props = Astro.props;
+---
+
+<section
+    class:list={[s["about"], "page-section"]}
+    data-highlight={props.highlight}
+    id={props["anchor id"]?.split(" ").join("-")}
+    data-offscreen
+    aria-labelledby={props.id}
+>
+    <Container>
+        <div class={s["about__wrapper"]}>
+            <header
+                class:list={[s["about__header"], "page-section__header"]}
+            >
+                <h2 id={props.id} class={s["about__title"]}>
+                    {props.title}
+                </h2>
+            </header>
+            <div class={s["about__content"]}>
+                <article class={s["about__content-article"]} data-animate="fade-slide" data-animate-children="true" data-animate-children-only="true">
+                    <slot set:html={props.body_html} />
+                </article>
+            </div>
+            <CustomImage
+                classlist={s["about__image"]}
+                eager={false}
+                size="large"
+                image={props.image}
+            />
+        </div>
+    </Container>
+</section>

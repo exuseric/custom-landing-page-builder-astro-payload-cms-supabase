@@ -1,0 +1,41 @@
+---
+import type {SimpleTestimonialBlock} from '@utils/payload/types'
+interface Props extends SimpleTestimonialBlock {}
+
+import Container from "@components/Container.astro";
+import s from "./style.module.css";
+import { extractLexicalText } from '@utils/payload/helpers';
+
+const props = Astro.props;
+---
+
+<section
+  class:list={[s["testimonial-section"], "page-section"]}
+  data-highlight={props.highlight ?? 'false'}
+  data-offscreen
+  aria-labelledby={props.id}
+>
+  <Container>
+    <div class={s["testimonial-container"]}>
+      <header class:list={[["content_section__header"], "page-section__header"]}>
+        <h2 id={props.id} class={s["testimonial-title"]}>{props.title}</h2>
+      </header>
+      <div class={s["testimonial-grid"]}>
+        {
+          props.testimonies.map((testimony) => (
+            <div class={s["testimonial-card"]}>
+              <div class={s["testimonial-content"]}>
+                <slot set:html={extractLexicalText(testimony.testimony)} />
+              </div>
+              <div class={s["testimonial-author"]}>
+                <div class={s["author-info"]}>
+                  <h3>{testimony.title}</h3>
+                </div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </Container>
+</section>

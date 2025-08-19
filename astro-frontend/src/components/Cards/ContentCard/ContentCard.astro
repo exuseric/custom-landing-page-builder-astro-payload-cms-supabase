@@ -1,0 +1,26 @@
+---
+import s from "./style.module.css";
+import CustomImage from "@components/CustomImage.astro";
+const { cards } = Astro.props;
+---
+
+<div class={s["content_card__grid"]}>
+    {
+        cards.map((card: any) => (
+            <div class={s["content_card__content_wrapper"]}>
+                <div class={s["content_card__content"]}>
+                    <h3 class={s["content_card__content_title"]}>{card.title}</h3>
+                    <slot set:html={card.content} />
+                </div>
+                <div class={s["content_card__image_wrapper"]}>
+                    <CustomImage
+                        image={card.expand.image}
+                        eager={true}
+                        size="large"
+                        classlist={s["content_card__image"]}
+                    />
+                </div>
+            </div>
+        ))
+    }
+</div>
