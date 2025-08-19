@@ -47,7 +47,7 @@ Originally inspired by real-world client projects, this is a **generalized versi
 ### Setup
 ```bash
 # Clone repo
-git clone https://github.com/exuseric/custom-landing-page-builder.git
+git clone https://github.com/exuseric/custom-landing-page-builder-astro-payload-cms-supabase.git
 cd custom-landing-page-builder
 
 # Install CMS
