@@ -17,7 +17,7 @@
   "dependencies": {
     "@payloadcms/db-postgres": "3.40.0",
     "@payloadcms/db-sqlite": "3.40.0",
-    "@payloadcms/next": "3.40.0",
+    "@payloadcms/next": "3.44.0",
     "@payloadcms/payload-cloud": "3.40.0",
     "@payloadcms/plugin-cloud-storage": "3.40.0",
     "@payloadcms/richtext-lexical": "3.40.0",
